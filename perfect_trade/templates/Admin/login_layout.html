@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin | {{Page}}</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/w3.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/dashboard.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/user.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/bootstrap/css/bootstrap.css')}}">
+
+    <style>
+        html,
+        h2,
+        h1,
+        h3,
+        h4,
+        h5,
+        h6,
+        div,
+        p,
+        span,
+        input {
+            font-family: product;
+        }
+        
+        .form {
+            width: 40%;
+            margin: 10% auto;
+        }
+        
+        .signup-form {
+            width: 40%;
+            margin: 3% auto;
+        }
+        
+        .login-container {
+            padding: 2% 1%;
+        }
+        
+        .login-inputs {
+            width: 79%;
+            border: 1px solid lightgrey;
+            border-radius: 7px;
+            outline: none;
+            margin: auto;
+            color: grey;
+            transition: all ease-in 0.35s;
+        }
+        
+        .login-inputs:focus {
+            width: 90%;
+        }
+        
+        .signup-inputs {
+            width: 77%;
+            border: 1px solid lightgray;
+            border-radius: 7px;
+            outline: none;
+            margin: auto;
+            color: grey;
+            transition: all ease-in 0.35s;
+        }
+        
+        .signup-inputs:focus {
+            width: 85%;
+        }
+        
+        .fp-inputs {
+            width: 80%;
+            border-radius: 7px;
+            outline: none;
+            margin: auto;
+            color: grey;
+            transition: all ease-in 0.35s;
+        }
+        
+        .fp-inputs:focus {
+            width: 90%;
+        }
+        
+        .submit-btn {
+            width: 50%;
+            border-radius: 20px;
+        }
+        
+        .fp-submit-btn {
+            width: 65%;
+            border-radius: 20px;
+        }
+        
+        a:hover {
+            text-decoration: none;
+        }
+        
+        .link-button {
+            border-radius: 12px;
+        }
+        
+        @media only screen and (max-width:767px) {
+            .form {
+                width: 74%;
+                margin: 20% auto;
+            }
+            .signup-form {
+                width: 85%;
+                margin: 10% auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container w3-container">
+        {% block admin_login %} {% endblock%}
+
+</html>

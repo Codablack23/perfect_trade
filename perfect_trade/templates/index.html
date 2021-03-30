@@ -1,0 +1,48 @@
+{% extends 'layout.html'%} {% block content %}
+<div>
+    <!-- Wecome Components -->
+    <div>
+        {% include 'components/welcome.html' %}
+    </div><br>
+    <div uk-scrollspy="target:div;cls:uk-animation-fade;delay:200;repeat:true" style="border-radius:20px;">
+        {% include 'components/charts.html'%}
+    </div>
+    <!--  -->
+
+    <!-- payments Method -->
+    <div uk-scrollspy="target:div;cls:uk-animation-slide-bottom;delay:300;repeat:true">
+        {% include 'components/services.html' %}
+    </div>
+    <!--  -->
+    <!-- investment Plans -->
+    <div uk-scrollspy="target:div;cls:uk-animation-slide-left;delay:300;repeat:true">
+        {% include 'components/plans.html' %}
+    </div>
+    <!--  -->
+    <!-- payments Method -->
+    <div uk-scrollspy="target:div;cls:uk-animation-slide-right;delay:300;repeat:true">
+        {% include 'components/payments.html' %}
+    </div>
+    <!--  -->
+    <!-- About us -->
+    <div uk-scrollspy="target:div;cls:uk-animation-slide-left;delay:300;repeat:true">
+        {% include 'components/about.html' %}
+    </div>
+    <div>
+        {% include 'components/team.html' %}
+    </div>
+    <!--  -->
+
+    <!-- Contact -->
+    <div uk-scrollspy="target:.col-12;cls:uk-animation-slide-bottom;delay:300;repeat:true">
+        {% include 'components/contacts.html' %}
+    </div>
+    <!--  -->
+    <!-- FAQS -->
+    <div uk-scrollspy="target:div;cls:uk-animation-slide-bottom;delay:300;repeat:true">
+        {% include 'components/faq.html'%}
+    </div>
+
+    <!--  -->
+</div>
+{% endblock %}

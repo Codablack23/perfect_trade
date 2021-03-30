@@ -1,0 +1,24 @@
+{% extends 'User/user_layout.html' %} {% block user %}
+<div class="login-container">
+    {% include 'User/components/navigation.html' %}
+    <div class="container form">
+        <div class="w3-card card">
+            {% include 'User/components/messages.html'%}
+            <header class="w3-center mt-2">
+                <h3 class="w3-text-green">Member Login</h3>
+                <p class="w3-text-grey w3-small w3-margin">Welcome Back! Login To Your Account and Start Investing </p>
+
+            </header>
+            <form method="POST" action="" class="container w3-padding w3-center w3-text-grey">
+                <input type="email" name="email" id="email" class="login-inputs password mb-2" placeholder="Email"><br>
+                <input type="password" name="password" id="password" class="login-inputs password mb-2" placeholder="Password"><br>
+
+                <br>
+                <button class="w3-button w3-green submit-btn w3-hover-pale-green w3-hover-text-green">Login</button><br>
+                <a href="/forgotpassword" class="w3-text-green">forgot Password?</a>
+            </form>
+        </div>
+    </div>
+
+</div>
+{% include "User/components/script.html" %} {% endblock %}

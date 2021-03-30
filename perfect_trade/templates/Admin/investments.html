@@ -1,0 +1,36 @@
+{% extends "Admin/admin_layout.html" %} {% block admin_dashboard %}
+<div id="investments">
+    <div class="w3-card p-2 w3-text-grey">
+        <h3 class="w3-text-green w3-center">Recent Investments</h3>
+        <div class="w3-text-grey">
+            <ul class="w3-ul">
+                {% for investment in Investments %}
+                <li class="">
+                    <div>
+                        <div class="name">
+                            <h3 class="">{{investment["Name"]}}</h3>
+                            <h5>{{investment["Plan"]}}</h5>
+                            <div class="d-flex">
+                                <h5>{{investment["Percentage"]}}%</h5>
+                                <h5 class="ml-auto">{{investment["Duration(Days)"]}} Days</h5>
+                            </div>
+                            <div class="d-flex">
+                                <h5 class="w3-text-green">{{investment["Amount"]}} {{investment["Currency"]}}</h5>
+                                <h5 class="w3-text-green ml-auto">{{investment["Amount_Recieved"]}} {{investment["Currency"]}}</h5>
+                            </div>
+                            <div class="d-flex">
+                                <h5 class="">{{investment["Date_Invested"]}}</h5>
+                                <h5 class="ml-auto">{{investment["Date_Of_Returns"]}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

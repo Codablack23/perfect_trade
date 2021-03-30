@@ -1,0 +1,72 @@
+{% extends 'Dashboard/dashboard_layout.html'%} {% block dashboard %}
+<div class="main-content w3-white">
+    {% include 'Dashboard/components/navigation.html' %}
+    <div class="container ">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-md-5">
+                    <div class="w3-card-2 w3-text-red p-4" id="withdraw">
+                        <header id="withdraw-status">
+                            <!-- <div class="w3-text-green w3-pale-green p-2 ml-4 mr-4 w3-center" style="border-radius: 13px;" id="success">
+                                <h3>Success</h3>
+                            </div><br> -->
+                        </header>
+                        <h2 class="w3-center">Request Withdrawal</h2>
+                        <form action="" class="w3-center" id="withdraw_form">
+                            <input type="number" name="amount" id="amount" class="amount w3-card" placeholder="Amount" required><br><br>
+                            <h4 class="w3-text-grey">Currency</h4>
+                            <select name="currency" id="currency" class="currency w3-card" required>
+                                <option value="USD">USD</option>
+                                <option value="NGN">NGN</option>
+                            </select><br><br>
+                            <button type="submit" class="w3-text-red btn w3-pale-red btn-lg" id="withdraw-btn">Withdraw</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div><br><br>
+
+
+        <div class="withdrawal-table w3-responsive mt-5">
+            <div class="loader">
+
+            </div>
+            <header class="w3-padding">
+                <h3 class="w3-center w3-text-grey">Requested Withdraws</h3>
+            </header>
+            <table class="w3-table-all w3-center w3-text-grey w3-card">
+                <thead>
+                    <tr class="w3-light-grey w3-text-red">
+                        <th>Amount</th>
+                        <th>Currency</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                    <tbody id="tb-content">
+                        <tr>
+                            <td>00.00</td>
+                            <td>USD</td>
+                            <th>00-00-00</th>
+                            <td><button class="w3-pale-yellow btn w3-text-yellow">Pending</button></td>
+                        </tr>
+                    </tbody>
+
+                    <!-- <tr>
+                    <td>500.00</td>
+                    <td>USD</td>
+                    <th>22-01-21</th>
+                    <td><button class="w3-pale-green btn w3-text-green">Approved</button></td>
+                </tr>
+                <tr>
+                    <td>200.00</td>
+                    <td>USD</td>
+                    <th>22-01-21</th>
+                    <td><button class="w3-pale-red btn w3-text-red">Rejected</button></td>
+                </tr> -->
+
+            </table><br>
+            <button class="w3-text-green btn w3-pale-green btn-lg " id="refresh-table">Refresh Table </button>
+        </div>
+    </div>
+</div>
+{% endblock %}

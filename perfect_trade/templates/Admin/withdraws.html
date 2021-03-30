@@ -1,0 +1,38 @@
+{% extends "Admin/admin_layout.html" %} {% block admin_dashboard %}
+
+<div class="" id="withdraws">
+    <div class="w3-card p-2 w3-text-grey">
+        <h3 class="w3-text-green w3-center">Requested Withdraws</h3>
+        <div class="w3-text-grey">
+            <ul class="w3-ul">
+                {% for withdraws in Withdraws %}
+                <li class="">
+                    <div class="d-flex">
+                        <h3 class="">{{withdraws["Name"]}}</h3>
+                        <h3 class="w3-text-grey ml-auto">{{withdraws["Status"]}}</h3>
+                    </div>
+                    <div class="withdraw-details w3-medium w3-text-green"><span class="w3-right"><span class="w3-text-green">{{withdraws["Amount"]}}</span> <span class="w3-text-green">{{withdraws["Currency"]}}</span></span> <span class="">{{withdraws["Date"].strftime("%c")}}</span></div>
+
+                    <div class="withdraw-buttons {% if withdraws['Status']=='Pending' %} {% else %} w3-disabled {% endif %}">
+                        <button class="btn w3-pale-green w3-text-green border-radius" id="accept_Withdraw" onclick="acceptWithdrawal({{withdraws['Id']}},'{{withdraws['Email']}}','{{withdraws['Date'].strftime('%c')}}','{{withdraws['Amount']}}{{withdraws['Currency']}}')">Accept</button>
+                        <button class="btn w3-right w3-pale-red w3-text-red border-radius" id="reject_withdrawal" onclick="rejectWithdrawal({{withdraws['Id']}},'{{withdraws['Email']}}','{{withdraws['Date'].strftime('%c')}}','{{withdraws['Amount']}}{{withdraws['Currency']}}')">Reject</button>
+                    </div>
+                </li>
+                {% endfor %}
+                <!-- <li class="">
+                    <h3 class="">Goodluck Edih</h3>
+                    <div class="withdraw-details w3-medium w3-text-green"><span class="w3-right"><span class="w3-text-green">200</span> <span class="w3-text-green">USD</span></span> <span class="">21-02-2021</span></div>
+
+                    <div class="withdraw-buttons">
+                        <button class="btn w3-pale-green w3-text-green border-radius" id="accept_Withdraw">Accept</button>
+                        <button class="btn w3-pale-red w3-text-red border-radius" id="reject_withdrawal">Reject</button>
+                        <button class="w3-right btn alert-primary w3-text-blue">Pay</button>
+                    </div>
+                </li> -->
+            </ul>
+        </div>
+
+    </div>
+
+
+    {% endblock %}

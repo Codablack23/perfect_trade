@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfect Trade | {{Page}}</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='/css/uikit.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/w3.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/bootstrap/css/bootstrap.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}">
+    <!-- <link rel="manifest" href="https://w.mytrlk.com/index.php?id_promo=5059713_1&promokeys=624ce41316a167db23279ef652c01636&aff_sourceid=&clickid="> -->
+    <script src="{{url_for('static', filename='/js/uikit.js')}}"></script>
+    <script src="{{url_for('static', filename='/js/uikit.min.js')}}"></script>
+    <script src="{{url_for('static', filename='/js/uikit-icons.js')}}"></script>
+    <!-- <script src="https://w.mytrlk.com/index.php?id_promo=5059713_1&promokeys=624ce41316a167db23279ef652c01636&aff_sourceid=&clickid="></script> -->
+
+</head>
+
+<body>
+
+    {% block content%} {% endblock%}
+</body>
+<script src="{{url_for('static', filename='js/jquery.js')}}"></script>
+<script src="{{url_for('static', filename='js/index.js')}}"></script>
+<script src="{{url_for('static', filename='bootstrap/js/bootstrap.js')}}"></script>
+
+</html>

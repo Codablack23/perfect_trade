@@ -1,0 +1,98 @@
+</div>
+</body>
+<script src="{{url_for('static', filename='js/jquery.js')}}"></script>
+<!-- <script src="{{url_for('static', filename='js/index.js')}}"></script> -->
+<script src="{{url_for('static', filename='bootstrap/js/bootstrap.js')}}"></script>
+<script>
+    $(document).ready(() => {
+        $('#confirm_sign').submit(() => {
+            let pin = document.querySelector('#pin').value
+            event.preventDefault()
+            $.ajax({
+                url: "confirm_email",
+                type: "POST",
+                dataType: "JSON",
+                data: {
+                    pin
+
+                },
+                success: (data) => {
+                    console.log(data)
+                    let message = ""
+                    if (data.status == "success") {
+                        $('#success').fadeIn()
+                        $('#failed').fadeOut()
+                    } else {
+                        $('#failed').fadeIn()
+                        $('#sucess').fadeOut()
+                    }
+                },
+
+            })
+        })
+    })
+    const error_check = {
+        s_name: (val, id) => {
+            const err_tag = document.querySelector(`#${id}_err`)
+            const regex = /[0-9]+/
+            if (regex.exec(val)) {
+                let error_text = "Only Letters are Allowed"
+                err_code = error_text
+                all_errors[id] = err_code
+                err_tag.innerHTML = err_code
+            } else {
+                err_code = ""
+                all_errors[id] = err_code
+                err_tag.innerHTML = err_code
+
+            }
+        },
+        f_name: (val, id) => {
+            const err_tag = document.querySelector(`#${id}_err`)
+            const regex = /[0-9]+/
+            const regex2 = /d+/
+            if (regex.exec(val)) {
+                let error_text = "Only Letters are Allowed"
+                all_errors[id] = error_text
+                err_code = error_text
+                err_tag.innerHTML = err_code
+
+            } else {
+                err_code = ""
+                all_errors[id] = err_code
+                err_tag.innerHTML = err_code
+            }
+        },
+        password: (val, id) => {
+            const err_tag = document.querySelector(`#${id}_err`)
+            const regex = /[a-z]+/
+            const regex2 = /[0-9]+/
+            if (regex.exec(val) && regex2.exec(val)) {
+                err_code = ""
+                all_errors[id] = err_code
+                err_tag.innerHTML = err_code
+
+            } else {
+                let error_text = "Password must Contain atleast A number and alphabets"
+                all_errors[id] = error_text
+                err_code = error_text
+                err_tag.innerHTML = err_code
+            }
+        },
+    }
+    const all_errors = {
+        s_name: "",
+        f_name: "",
+        password: ""
+    }
+    let err_code = ""
+    checked = document.querySelectorAll('.validate')
+
+    checked.forEach(input => {
+        input.addEventListener('input', (e) => {
+            const target = e.target
+            const checked_id = target.id
+            error_check[checked_id](target.value, checked_id)
+        })
+    });
+</script>

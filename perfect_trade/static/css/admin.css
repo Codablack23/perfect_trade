@@ -1,0 +1,43 @@
+.search_investor {
+    border-radius: 10px;
+    color: white;
+    border: none;
+    width: 90%;
+    outline: none;
+}
+
+.border-radius {
+    border-radius: 7px;
+}
+
+.withdraw-buttons button {
+    padding: 3px 3%;
+}
+
+#withdraws {
+    margin: 10px auto;
+    width: 80%;
+}
+
+#clients {
+    width: 85%;
+    margin: 12px auto;
+}
+
+#investments {
+    margin: 10px auto;
+    width: 80%;
+}
+
+.admin-input {
+    width: 83%;
+    border: none;
+    border-radius: 7px;
+    padding: 2%;
+    margin-bottom: 5px;
+    outline: none;
+}
+
+.submit-btn {
+    padding: 2% 5%;
+}

@@ -1,0 +1,35 @@
+{% extends "Admin/admin_layout.html" %} {% block admin_dashboard %}
+<div class="" id="clients">
+    <div class="p1">
+        <div class="row">
+            <div class="col-6 col-xs-12">
+                <h2 class="w3-text-grey w3-center">Registered Clients</h2>
+                {% for client in Clients %}
+                <div class="bg-light w3-text-grey p-3 border-radius">
+                    <h4>{{client["Firstname"]}} {{client["Surname"]}}</h4>
+                    <h4>{{client["Email"]}}</h4>
+                    <hr>
+                    <h4><span>Client ID: </span>{{client["Customer_ID"]}}</h4>
+
+                </div><br> {% endfor %}
+            </div>
+            <div class="col-6 col-xs-12">
+                <h2 class="w3-text-grey w3-center">Accounts Info</h2>
+                {% for account in accounts %}
+                <div class="bg-light w3-text-grey p-3 border-radius">
+
+                    <h2 class="w3-center">{{account["Name"]}} </h2>
+                    <hr>
+                    <div>
+                        <h4>{{account["Account_Name"]}} </h4>
+                        <h4>{{account["Account_No"]}} </h4>
+                        <h4>{{account["Bank"]}} </h4>
+
+                    </div>
+                </div><br> {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

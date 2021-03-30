@@ -1,0 +1,23 @@
+@font-face {
+    font-family: product;
+    src: url('../webfonts/Product_Sans_Regular.ttf');
+}
+
+@font-face {
+    font-family: salemFont;
+    src: url('../webfonts/Adriana.ttf')
+}
+
+html,
+h2,
+h1,
+h3,
+h4,
+h5,
+h6,
+div,
+p,
+span,
+input {
+    font-family: product;
+}

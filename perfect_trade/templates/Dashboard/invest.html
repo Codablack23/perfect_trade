@@ -1,0 +1,119 @@
+{% extends 'Dashboard/dashboard_layout.html'%} {% block dashboard %}
+<div class="main-content w3-white">
+    {% include 'Dashboard/components/navigation.html' %}
+    <div class="container ">
+        <div class=" w3-text-green p-4 w3-round">
+            <div class="">
+                <h3 class="w3-text-green">Hello {{fullname}}</h3>
+            </div>
+        </div>
+        <div class="d-flex w3-card-2 ml-auto mr-auto w3-round-large" style="width: 75%;">
+            <div class="w3-green p-3 w3-hide-small w-md-50 w-100">
+                <h3>INVEST</h3><br>
+                <div>
+                    <h3 class="w3-center">Our Investment Plans</h3>
+                    <div class="investment-plans mr-auto ml-auto" style="width: 70%;">
+                        <div class="w3-white w3-text-green p-4 w3-hover-pale-green w3-hover-text-green i_plans" onclick="selectPlan(0,'bronze','i_plans'); selectPlan(0,'bronze','i_plan')" style="border-radius: 15px;">
+                            <h5>Bronze Plan</h5>
+                            <h5>USD 250-900</h5>
+                        </div><br>
+                        <div class="w3-white w3-text-green p-4 w3-hover-pale-green w3-hover-text-green i_plans" onclick="selectPlan(1,'silver','i_plans'); selectPlan(1,'silver','i_plan')" style="border-radius: 15px;">
+                            <h5>Siver Plan</h5>
+                            <h5> USD 250-900</h5>
+                        </div><br>
+                        <div class="w3-white w3-text-green p-4 w3-hover-pale-green w3-hover-text-green i_plans" onclick="selectPlan(2,'gold','i_plans'); selectPlan(2,'gold','i_plan')" style="border-radius: 15px;">
+                            <h5>Gold Plan</h5>
+                            <h5> USD 250-900</h5>
+                        </div><br>
+                    </div>
+                </div>
+            </div>
+            <div class="w3-white w-md-50 w-100">
+                <div class="w3-card d-md-none p-4">
+                    <div class="d-flex">
+                        <h4 class="w3-text-grey">Pick Your Investment Plan</h4>
+                        <h4 class="ml-auto w3-text-green"><span class="glyphicon glyphicon-chevron-down" id="open_plans"></span></h4>
+                    </div>
+                    <ul class="w3-ul w3-text-green" id="closed_plans" style="display: none;">
+                        <li class="w3-hover-green i_plan" onclick="selectPlan(0,'bronze','i_plan');selectPlan(0,'bronze','i_plans')">
+                            <h5>Bronze Plan</h5>
+                            <h5> USD 250-900</h5>
+                        </li>
+                        <li class="w3-hover-green i_plan" onclick="selectPlan(1,'silver','i_plan'); selectPlan(1,'silver','i_plans')">
+                            <h5>Siver Plan</h5>
+                            <h5> USD 1000-9000</h5>
+                        </li>
+                        <li class="w3-hover-green i_plan" onclick="selectPlan(2,'gold','i_plan');selectPlan(2,'gold','i_plans')">
+                            <h5>Gold Plan</h5>
+                            <h5>USD 10,000 and above</h5>
+                        </li>
+                    </ul>
+                    <!-- <ul class="nav nav-tabs  w3-medium w3-center">
+                        <li class="nav-item w3-round-large w3-card">
+                            <a class="nav-link w3-text-green" href="#">Bronze</a>
+                        </li>
+                        <li class="nav-item ml-2 w3-card w3-round-large">
+                            <a class="nav-link w3-text-green" href="#">Silver</a>
+                        </li>
+                        <li class="nav-item ml-2 w3-card w3-round-large">
+                            <a class="nav-link w3-card w3-text-green" href=" # ">Gold</a>
+                        </li>
+                    </ul> -->
+                </div>
+                <div class="p-3 ">
+
+                    <h4 class="w3-text-grey ">Pay In</h4>
+                    <ul class="nav nav-tabs w3-medium ">
+                        <li class="nav-item ">
+                            <a class="nav-link w3-text-green " data-toggle="tab" href="#payWithPaystack">Pay In Cash</a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link w3-text-green " data-toggle="tab" href="#payWithCrypto">Cryptocurrency</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane container active" id="payWithPaystack">
+                            <div class="w3-animate-opacity">
+                                <form class="paystack_payment_form w3-center ">
+                                    <div class="check_plan w3-text-red w3-pale-red p-3 m-2" style="display:none">
+                                        <h5>Please Select A plan</h5>
+                                    </div>
+                                    <h3 class="w3-text-grey p-3 mt-3 mb-5 ">Pay In Cash</h3>
+                                    <input type="email" class="paystack_input w3-border w3-border-light-grey " name="email" id="payment_email" placeholder="Email" required><br><br>
+                                    <input type="number" min="250" class="paystack_input w3-border w3-border-light-grey" name=" amount" id="payment_amount" placeholder="Enter amount" required><br><br>
+                                    <select class="paystack_input w3-border w3-border-light-grey " name="currency" id="payment_currency" placeholder="Currency">
+                                            <option value="NGN ">NGN</option>
+                                        </select><br><br>
+                                    <button type="submit" class="pay-btn mt-4 p-3 btn btn-success " id="paystack-btn">Pay</button><br>
+
+                                </form>
+                            </div>
+                        </div>
+                        <div class="tab-pane container fade " id="payWithCrypto">
+                            <!-- <div class="w3-animate-opacity">
+                                <form class="paystack_payment_form w3-center ">
+                                    <div class="bit_pay w3-text-red w3-pale-red p-3 m-2" style="display:none">
+                                        <h5>Please Select A plan</h5>
+                                    </div>
+                                    <h3 class="w3-text-grey p-3 mt-3 mb-5 ">Pay With Cryptocurrency</h3>
+                                    <input type="email " class="paystack_input w3-border w3-border-light-grey " name="email" id="payment_email" placeholder="Email"><br><br>
+                                    <input type="number " class="paystack_input w3-border w3-border-light-grey" name=" amount" id="payment_amount" placeholder="Enter amount"><br><br>
+                                    <select class="paystack_input w3-border w3-border-light-grey " name="currency " id="payment_currency" placeholder="Currency">
+                                            <option value="USD ">Bitcoins</option>
+                                            <option value="NGN ">Etheruim</option>
+                                        </select><br><br>
+                                    <button type="submit " class="pay-btn mt-4 p-3 btn btn-success " id="paystack-btn">Pay</button>
+                                </form>
+                            </div> -->
+                            <div class="w3-center p-5 w3-text-light-grey">
+                                <h2 class="p-5">Coming Soon</h2>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

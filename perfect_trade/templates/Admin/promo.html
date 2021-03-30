@@ -1,0 +1,59 @@
+{% extends "Admin/admin_layout.html" %} {% block admin_dashboard %}
+<div class="main-content p-2 w3-white">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-md-5">
+                <div class="p1">
+                    <div class="d-flex">
+                        <h2 class="w3-text-grey w3-center">Available Promo</h2>
+                        <button class="btn alert-success w3-text-green pl-3 pr-3 ml-auto" id="add_promo_btn">Add Promo</button>
+                    </div><br> {% for promo in Promos %}
+                    <div class="w3-text-grey bg-light p-3 border-radius">
+                        <div class="w3-text-grey  p-3 border-radius">
+                            <div class="{% if promo['Status'] != 'Ongoing' %} w3-disabled  {% else %} bg-light  {% endif %}">
+                                <div class="d-flex">
+                                    <h3>{{promo["Promo_Name"]}} </h3>
+                                    <h5 class="ml-auto">{{promo["Duration_in_Days"]}} Days</h5>
+                                </div>
+                                <div class="details d-flex">
+                                    <h5>Start: {{promo["Date_Started"].strftime("%x")}}</h5>
+                                    <h5 class="ml-auto">End:{{promo["Date_to_End"].strftime("%x")}}</h5>
+                                </div><br>
+                                <div class="d-flex">
+                                    <h5>Description: {{promo["Description"]}}</h5>
+                                    <h5 class="ml-auto">Status:{{promo["Status"]}}</h5>
+                                </div>
+                            </div>
+                            <div>
+                                {% if promo['Status'] == 'Suspended' %}
+                                <button class="btn  alert-primary w3-text-blue border-radius" onclick="resumePromo({{promo['Id']}})">Resume Promo</button>
+                                <button class="btn  w3-light-grey pl-3 pr-3 w3-text-grey border-radius" onclick="endPromo({{promo['Id']}})">End Promo</button> {% else %} {% if promo['Status']=="Ended" %}
+                                <span></span> {% else %}
+                                <button class="btn  alert-primary w3-text-blue border-radius" onclick="suspendPromo({{promo['Id']}})">Suspend Promo</button>
+                                <button class="btn  w3-light-grey pl-3 pr-3 w3-text-grey border-radius" onclick="endPromo({{promo['Id']}})">End Promo</button> {% endif %}{% endif %}
+                                <button class="btn  w3-pale-red w3-text-red w3-right" onclick="deletePromo({{promo['Id']}})">Delete</button>
+                            </div>
+                        </div>
+                    </div><br> {% endfor %}
+                </div>
+            </div>
+            <div class="col-12 col-md-2"></div>
+            <div class="col-12 col-md-4 p-4">
+                <div class="w3-card p-2 w3-text-grey w3-center border-radius" id="new_promo" style="display: none;">
+                    <h3 class="w3-text-green">Add Promo</h3>
+                    <div class="w3-text-grey">
+                        <form id="new_promo_form">
+                            <input type="text" class="admin-input w3-card-2" minlength="3" name="promo_title" id="promo_title" placeholder="Promo Title" required><br>
+                            <input type="number" class="admin-input w3-card-2" min="1" name="promo_duration" id="promo_duration" placeholder="Duration in Days" required><br>
+                            <input type="text" class="admin-input w3-card-2" minlength="6" name="promo_description" id="promo_description" placeholder="Description" required><br>
+                            <button class="btn w3-pale-green w3-text-green submit-btn">Submit</button>
+                        </form>
+                    </div>
+                </div><br>
+                <!-- Recent investments -->
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

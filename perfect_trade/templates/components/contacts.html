@@ -1,0 +1,45 @@
+<div class="contacts w3-center bg-dark" id="contacts">
+    <div class="container">
+        <div class="row p-2">
+            <div class="col-12 col-md-3">
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="w3-text-red mt-5">
+                    <div class="mt-5 p-1 w3-text-red">
+                        <h2 class="w3-text-red">Contact Us</h2>
+                        <h6 class="w3-text-grey">Contact The Support Team For a Quick Response Fill the Form and We Will Get Back to You</h6>
+                    </div>
+                    <div class="p-3">
+                        <form action="" id="contact-form" class="p-5 w3-card w3-text-grey w3-round">
+                            <div class="bg-danger w3-rounded p-3 w3-center " id="success" style="display: none;">
+                                <span class="w3-close-btn w3-right w3-text-white" id="success-close-btn">X</span>
+                                <h5 class="w3-text-white w3-small">You Have Successfully Sent A Message We Get Back To You Once Will Recieve your Message</h6>
+                            </div>
+                            <div class="bg-danger w3-rounded p-5 w3-center" id="failed" style="display: none;">
+                                <span class="w3-close-btn w3-right w3-text-white" id="failed-close-btn">X</span><br>
+                                <h6 class="w3-text-white w3-small">It Seems Like an Error Occured Please Check Your Internet and Try again </h6>
+                            </div><br>
+                            <header class="w3-text-green">
+                                <h4 class="w3-text-red">CONTACT FORM</h4><br>
+                            </header>
+                            <input type="text" name="first_name" class="contact-inputs mb-2" placeholder="First Name" id="firstname" required><br>
+                            <p class="w3-text-red" id="firstname-error"></p>
+                            <input type="text" name="last_name" class="contact-inputs mb-2" placeholder="Last Name" id="lastname" required><br>
+                            <p class="w3-text-red" id="lastname-error"></p>
+                            <input type="email" name="email" class="contact-inputs mb-2" id="email" placeholder="Email" required><br>
+                            <p class="w3-text-red" id="email-error"></p>
+                            <input type="text" name="subject" class="contact-inputs mb-2" placeholder="Subject" id="subject" required><br>
+                            <p class="w3-text-red" id="subject-error"></p>
+                            <textarea name="message" id="message" class="contact-inputs mb-2" cols="30" rows="10" placeholder="Message" required></textarea><br>
+                            <p class="w3-text-red" id="message-error"></p>
+                            <button type="submit" class="btn btn-danger w3-medium">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-3">
+            </div>
+
+        </div>
+    </div>
+</div>

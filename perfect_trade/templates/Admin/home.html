@@ -1,0 +1,77 @@
+{% extends "Admin/admin_layout.html" %} {% block admin_dashboard %}
+<div class="main-content p-2 w3-white">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-md-4">
+                <div class="p1">
+                    <h2 class="w3-text-grey w3-center">Investors</h2>
+                    {% for client in Clients %}
+                    <div class="bg-light w3-text-grey p-3 border-radius">
+                        <h3>{{client["Surname"]}} {{client["Firstname"]}} </h3>
+                        <h5>Investors</h5>
+                        <hr>
+                    </div><br> {% endfor %}
+                </div>
+            </div>
+            <div class="col-12 col-md-8">
+                <div class="w3-card p-2 w3-text-grey">
+                    <h3 class="w3-text-green">Requested Withdraws</h3>
+                    <div class="w3-text-grey">
+                        <ul class="w3-ul">
+                            {% for i in range(2) %}
+                            <li class="">
+                                <h3 class="">{{withdraws[i]["Name"]}}</h3>
+                                <div class="withdraw-details w3-medium w3-text-green"><span class="w3-right"><span class="w3-text-green">{{withdraws[i]["Amount"]}}</span> <span class="w3-text-green">{{withdraws[i]["Currency"]}}</span></span> <span class="">{{withdraws[i]["Date"].strftime("%c")}}</span></div>
+
+                                <div class="withdraw-buttons">
+                                    <button class="btn w3-pale-green w3-text-green border-radius" id="accept_Withdraw">Accept</button>
+                                    <button class="btn w3-right w3-pale-red w3-text-red border-radius" id="reject_withdrawal">Reject</button>
+
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="w3-center">
+                        <a href="withdraws"><button class="btn w3-pale-blue w3-text-blue btn-lg">Show All Withdraws</button></a>
+                    </div>
+                </div><br>
+                <!-- Recent investments -->
+                <div class="w3-card p-2 w3-text-grey">
+                    <h3 class="w3-text-green">Recent Investments</h3>
+                    <div class="w3-text-grey">
+                        <ul class="w3-ul">
+                            {% for investment in investments %}
+                            <li class="">
+                                <div>
+                                    <div class="name">
+                                        <h3 class="">{{investment["Name"]}}</h3>
+                                        <h5>{{investment["Plan"]}}</h5>
+                                        <div class="d-flex">
+                                            <h5>{{investment["Percentage"]}}%</h5>
+                                            <h5 class="ml-auto">{{investment["Duration(Days)"]}} Days</h5>
+                                        </div>
+                                        <div class="d-flex">
+                                            <h5 class="w3-text-green">{{investment["Amount"]}} {{investment["Currency"]}}</h5>
+                                            <h5 class="w3-text-green ml-auto">{{investment["Amount_Recieved"]}} {{investment["Currency"]}}</h5>
+                                        </div>
+                                        <div class="d-flex">
+                                            <h5 class="">{{investment["Date_Invested"]}}</h5>
+                                            <h5 class="ml-auto">{{investment["Date_Of_Returns"]}}</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="w3-center">
+                        <a href="investments"><button class="btn w3-pale-blue w3-text-blue btn-lg">Show All Investment</button></a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

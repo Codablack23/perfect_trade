@@ -1,0 +1,47 @@
+{% extends 'Dashboard/dashboard_layout.html'%} {% block dashboard %}
+<div class="main-content w3-white">
+    {% include 'Dashboard/components/navigation.html' %}
+    <div class="container " id="reff">
+        <div class="w3-pale-green w3-text-green p-4 w3-round">
+            <div>
+                <span class="w3-text-red w3-large">Referral Link</span>
+                <span class="w3-right p-3 w3-pale-blue w3-text-blue w3-round" id="link_copied" style="display: none;">Link Copied To Your Clipboard !!</span>
+            </div><br>
+            <span> <input class="w3-text-green" value="{{user['Customer_ID']}}" id="copied-text" readonly />
+            <span class="btn btn-success w3-right w3-text-white" id="copy-button">Copy Link </span>
+        </div>
+
+        <div class="transaction-table w3-responsive mt-5">
+            <header class="w3-padding">
+                <h3 class="w3-center w3-text-grey">Successful Referrals</h3>
+            </header>
+            <table class="w3-table-all w3-center w3-text-grey w3-card">
+                <thead>
+                    <tr class="w3-light-grey w3-text-red">
+                        <th>Referred</th>
+                        <th>Date</th>
+                        <th>Percentage</th>
+
+                    </tr>
+                </thead>
+                <tr>
+                    <td>Referred 1</td>
+                    <td>22-01-21</td>
+                    <td>4%</td>
+                </tr>
+                <tr>
+                    <td>Referred 2</td>
+                    <td>15-01-21</td>
+                    <td>4%</td>
+                </tr>
+                <tr>
+                    <td>Referred #</td>
+                    <td>05-01-21</td>
+                    <td>4%</td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

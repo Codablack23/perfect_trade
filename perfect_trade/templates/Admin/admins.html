@@ -1,0 +1,74 @@
+{% extends "Admin/admin_layout.html" %} {% block admin_dashboard %}
+<div class="main-content p-2 w3-white">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-md-5">
+                <div class="p1">
+                    <div class="d-flex">
+                        <h2 class="w3-text-grey w3-center">Administrators</h2>
+                        <button class="btn alert-success w3-text-green pl-3 pr-3 ml-auto" id="addAdminBtn">Add Admin</button>
+                    </div><br> {% if Admins %} {% for admin in Admins %} {% if admin["Superuser"] !="True" %}
+                    <div class="bg-light w3-text-grey p-3 border-radius ">
+                        <div class="{% if admin['Suspended'] =='True'%} w3-disabled {% endif %}">
+                            <div class="d-flex">
+                                <h3> {{admin["Admin_Name"]}}</h3>
+                                <div class="ml-auto" style="display: none;" id="loader_{{admin['Id']}}">
+                                    <div class="spinner">
+                                        <div class="red"></div>
+                                        <div class="red"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h5>Administrator</h5>
+                        </div>
+                        {% if admin['Suspended'] =='True'%}
+                        <div class="">
+                            <button class="btn  alert-primary w3-text-blue border-radius" onclick="Resume({{admin['Id']}})">Resume</button>
+                            <button class="btn  w3-pale-red w3-text-red w3-right" onclick="deleteAdmin({{admin['Id']}})">Delete</button>
+                        </div>
+                        {% else %}
+                        <div class="">
+                            <button class="btn  alert-primary w3-text-blue border-radius" onclick="suspendAdmin({{admin['Id']}})">Suspend</button>
+                            <button class="btn  w3-pale-red w3-text-red w3-right" onclick="deleteAdmin({{admin['Id']}})">Delete</button>
+                        </div>
+                        {% endif %}
+                    </div><br> {% endif %} {% endfor %} {% else %}
+                    <h2 class="w3-text-grey w3-center">No Other Administrators</h2>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-12 col-md-2"></div>
+            <div class="col-12 col-md-4 p-3">
+                <div class="w3-card p-2 w3-text-grey w3-center border-radius" style="display: none;" id="addAdmin">
+                    <div id="admin_form_loader" style="display: none;">
+                        <div class="spinner">
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <div id='err_messages' style="display: none;">
+
+                    </div>
+                    <h3 class="w3-text-green">Add Admin</h3>
+                    <div class="w3-text-grey">
+                        <form method="POST" id="add_admin_form">
+                            <input type="email" class="admin-input w3-card-2" name="email" id="new_admin_email" placeholder="Email" required><br>
+                            <input type="text" class="admin-input w3-card-2" minlength="3" name="name" id="new_admin_name" placeholder="Name" required><br>
+                            <p class="w3-small w3-text-red" id="new_admin_name_err"></p>
+                            <input type="text" class="admin-input w3-card-2" minlength="3" name="username" id="new_admin_username" placeholder="Username" required><br>
+                            <p class="w3-small w3-text-red" id="new_admin_username_err"></p>
+                            <input type="password" class="admin-input w3-card-2" minlength="8" name="password" id="new_admin_password" placeholder="Password" required><br>
+                            <p class="w3-small w3-text-red" id="new_admin_password_err"></p>
+                            <input type="password" class="admin-input w3-card-2" minlength="8" name="confirm_password" id="new_admin_confirm_password" placeholder="Confirm Password"><br>
+                            <p class="w3-small w3-text-red" id="new_admin_confirm_password_err"></p>
+                            <button class="btn w3-pale-green w3-text-green" id="submit_admin_details">Submit</button>
+                        </form>
+                    </div>
+                </div><br>
+                <!-- Recent investments -->
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

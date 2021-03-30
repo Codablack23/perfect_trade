@@ -1,0 +1,58 @@
+{% extends 'User/user_layout.html' %} {% block user %}
+<div class="login-container">
+    {% include 'User/components/navigation.html' %}
+    <div class="container form">
+        <div class="">
+            <header class="status ">
+                <div class=" w3-animate-opacity w3-center w3-pale-green w3-text-white p-3 w3-container" style="display:none" id="success">
+                    <h6 class="w3-text-green" id="status-text">You Have Successfully Registered You Can Now Login</h6>
+                    <button class="w3-button w3-green w3-border w3-border-green w3-hover-pale-green w3-hover-text-green">Login</button><br>
+                </div>
+                <div class=" w3-animate-opacity w3-center w3-pale-red w3-text-white p-3 w3-container" style="display:none" id="failed">
+                    <h6 class="w3-text-red" id="status-text">Your Pin Do Not Match</h6>
+                </div>
+                <div class=" w3-animate-opacity w3-center w3-pale-red w3-text-white p-3 w3-container" style="display:none" id="loading">
+                    <h6 class="w3-text-red" id="status-text"></h6>
+                </div>
+                <div class=" w3-animate-opacity w3-center w3-pale-red w3-text-white p-3 w3-container" style="display:none" id="session_cleared">
+                    <h6 class="w3-text-red" id="status-text">Sorry It seems Your Pin Has expired </h6>
+                </div>
+
+            </header>
+            <header class="w3-center mt-2">
+                <h3 class="w3-text-green">Confirm Email</h3>
+                <p class="w3-text-grey w3-small w3-margin">Hello there! Enter The Pin sent To Your Email To Complete Registeration </p>
+
+            </header>
+            <form method="POST" action="" class="container w3-padding w3-center w3-text-grey" id="confirm_sign">
+                <input type="number" name="pin" id="pin" class="fp-inputs password mb-2 w3-border w3-border-light-gray" required placeholder="Enter Pin"><br>
+                <br>
+                <button class="w3-button w3-green fp-submit-btn w3-hover-pale-green w3-hover-text-green" type="submit" id="confirm-pin">Confirm Pin</button><br>
+                <a href="/login" class="w3-text-green">Back To Login</a>
+            </form>
+        </div>
+    </div>
+
+</div>
+{% include "User/components/script.html" %}
+<script>
+    const minute = Math.floor(1000 * 60 * 5)
+    const date = new Date()
+    console.log(date.getMinutes)
+    setTimeout(() => {
+        $(document).ready(() => {
+            $.ajax({
+                url: "/clearsession",
+                type: "POST",
+                success: (data) => {
+                    status_obj = JSON.parse(data)
+                    if (status_obj.message) {
+                        $('#session_cleared').fadeIn()
+                        $("#failed").fadeOut()
+                    }
+                }
+            })
+        })
+    }, minute)
+</script>
+{% endblock %}

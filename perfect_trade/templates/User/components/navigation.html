@@ -1,0 +1,8 @@
+<nav>
+    <a href="/" class="w3-large w3-text-green">Perfect Trade</a> {% if Page=="Login" %}
+    <a href="/signup" class="w3-right ml-2"><button class="w3-button link-button  w3-text-green w3-border w3-hover-pale-green w3-hover-text-green w3-border-green">Sign Up</button></a>
+    <a href="/login" class="w3-right "><button class="w3-button link-button w3-pale-green w3-text-green w3-hover-pale-green w3-hover-text-green">Log in</button></a> {% else %}
+    <a href="/signup" class="w3-right ml-2"><button class="w3-button link-button w3-pale-green w3-text-green w3-hover-pale-green w3-hover-text-green ">Sign Up</button></a>
+    <a href="/login" class="w3-right "><button class="w3-button link-button w3-text-green w3-lightgrey w3-border w3-border-green w3-hover-pale-green w3-hover-text-green">Log in</button></a> {% endif %}
+
+</nav>

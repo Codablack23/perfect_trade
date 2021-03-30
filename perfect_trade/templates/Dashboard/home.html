@@ -1,0 +1,158 @@
+{% extends "Dashboard/dashboard_layout.html" %} {% block dashboard %}
+<div class="main-content w3-white">
+    {% include 'Dashboard/components/navigation.html' %}
+
+    <!-- account snippets -->
+    <div class="container ">
+        <div class="d-md-flex w-100 p-3 w3-text-green">
+            <h1>Welcome Back</h1>
+            <h1 class="ml-auto">
+                <a href="invest"> <button class="w3-text-green btn w3-pale-green btn-lg">Invest Now</button></a>
+            </h1>
+        </div><br>
+        <div class="row">
+            <div class="col-12 col-md-5 w3-padding">
+                <ul class="w3-ul" id="pending_investment">
+                    <h3 class="w3-text-grey w3-center">Completed Investments</h3>
+                    {% if compLength > 0 %} {% for investment in complete %}
+                    <li>
+                        <div class="bg-success w3-text-white container w3-card-2 w3-padding w3-round">
+                            <div class="d-flex">
+                                <div>
+                                    <h2>{{investment['Currency']}} {{investment['Amount']}}</h2>
+                                </div>
+                                <div class="ml-auto">
+                                    <h2>{{investment['Currency']}} {{investment['Amount_Recieved']}}</h2>
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <h4>{{investment['Plan']}}</h4>
+                                <h4 class="ml-auto">{{investment['Percentage']}}%</h4>
+                            </div><br><br>
+                            <div class="d-flex">
+                                <h5>Duration:{{investment['Duration_Days']}} days</h5>
+                                <h5 class="ml-auto">{{ investment['Status']}}</h5>
+                            </div>
+                            <div class="d-flex">
+                                <h5>Start:{{investment['Date_Invested'].strftime("%x")}}</h5>
+                                <h5 class="ml-auto">End:{{investment['Date_Of_Returns'].strftime("%x")}}</h5>
+                            </div><br>
+                            <!-- <div class="w3-center">
+                                <h1>00:00:00</h1>
+                            </div>  -->
+                        </div>
+                    </li>
+                    {% endfor %} {% else %}
+                    <div class="w3-center p-5 p-5 w3-text-light-grey">
+                        <h3 class="p-5">No Investments Have Been Completed Yet</h3>
+                    </div>
+                    {% endif %}
+
+                    <li>
+                        <!-- <div class="bg-success w3-text-white container w3-card-2 w3-padding w3-round">
+                            <div class="d-flex">
+                                <div>
+                                    <h2>N100.00</h2>
+                                </div>
+                                <div class="ml-auto">
+                                    <h2>N150.00</h2>
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <h4>Gold Plan</h4>
+                                <h4 class="ml-auto">15%</h4>
+                            </div><br><br>
+                            <div class="d-flex">
+                                <h5>Duration:1 Month</h5>
+                                <h5 class="ml-auto">Completed</h5>
+                            </div>
+                            <div class="d-flex">
+                                <h5>Start:22-01-21</h5>
+                                <h5 class="ml-auto">End:22-01-21</h5>
+                            </div><br>
+                             <div class="w3-center">
+                                <h1>00:00:00</h1>
+                            </div> 
+                        </div> -->
+                    </li>
+                </ul>
+            </div>
+            <div class="col-12 col-md-2"></div>
+            <div class="col-12 col-md-5 w3-padding">
+                <ul class="w3-ul" id="pending_investment">
+                    <h3 class="w3-text-grey w3-center">Pending Investments</h3>
+                    {% if onlength > 0 %} {% for investment in Ongoing %}
+                    <li>
+                        <div class="bg-danger w3-text-white container w3-card-2 w3-padding w3-round">
+                            <div class="d-flex">
+                                <div>
+                                    <h2>{{investment['Currency']}} {{investment['Amount']}}</h2>
+                                </div>
+                                <div class="ml-auto">
+                                    <h2>{{investment['Currency']}} {{investment['Amount_Recieved']}}</h2>
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <h4>{{investment['Plan']}}</h4>
+                                <h4 class="ml-auto">{{investment['Percentage']}}%</h4>
+                            </div><br><br>
+                            <div class="d-flex">
+                                <h5>Duration:{{investment['Duration(Days)']}} days</h5>
+                                <h5 class="ml-auto">{{ investment['Status']}}</h5>
+                            </div>
+                            <div class="d-flex">
+                                <h5>Start:{{investment['Date_Invested'].strftime("%x")}}</h5>
+                                <h5 class="ml-auto">End:{{investment['Date_Of_Returns'].strftime("%x")}}</h5>
+                            </div><br>
+                            <!-- <div class="w3-center">
+                                <h1>00:00:00</h1>
+                            </div>  -->
+                        </div>
+                    </li>
+                    {% endfor %} {% else %}
+                    <div class="w3-center p-5 p-5 w3-text-light-grey">
+                        <h3 class="p-5">No Pending Investments</h3>
+                    </div>
+                    {% endif %}
+
+                    <!-- <li>
+                        <div class="bg-danger text-white container w3-card-2 w3-padding w3-round">
+                            <div class="d-flex">
+                                <div>
+                                    <h2>N600000.00</h2>
+                                </div>
+                                <div class="ml-auto">
+                                    <h2>N750000.00</h2>
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <h4>Gold Plan</h4>
+                                <h4 class="ml-auto">15%</h4>
+                            </div><br><br>
+                            <div class="d-flex">
+                                <h5>Duration:1 Month</h5>
+                                <h5 class="ml-auto">Ongoing</h5>
+                            </div>
+                            <div class="d-flex">
+                                <h5>Start:22-01-21</h5>
+                                <h5 class="ml-auto">End:22-01-21</h5>
+                            </div><br>
+                               <div class="w3-center">
+                                <h1>00:00:00</h1>
+                            </div> 
+            </div>
+            </li> -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!--  -->
+
+<!-- transactions snippets -->
+
+<!--  -->
+</div>
+
+
+{% endblock %}

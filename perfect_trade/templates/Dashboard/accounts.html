@@ -1,0 +1,103 @@
+{% extends 'Dashboard/dashboard_layout.html'%} {% block dashboard %}
+<div class="main-content w3-white">
+    {% include 'Dashboard/components/navigation.html' %}
+    <div class="container ">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-md-5 mb-3">
+                    <div class="w3-card border-radius p-4 w3-text-green mt-md-5" id="account_details">
+                        <h2 class="w3-center">Account Details</h2>
+                        <div>
+                            {% if L == True %}
+                            <ul class="w3-ul w3-meduim">
+                                <li class="">Acc No: <span class="w3-right">{{accounts['Account_No']}}</span></li>
+                                <li class="">Name: <span class="w3-right">{{accounts["Name"]}}</span></li>
+                                <li class="">Bank: <span class="w3-right">{{accounts['Bank']}}</span></li>
+                            </ul><br><br>
+                            <button class="w3-text-green btn w3-pale-green btn-lg mybtn" id="edit-account">Edit</button> {% else %}
+                            <div class="w3-text-light-grey w3-center p-5">
+                                <h4 class="p-5">YoU Have Not Added Your Account Details</h4>
+                                <button class="w3-text-green btn w3-pale-green btn-lg mybtn" id="edit-account">Add Account Details</button>
+                            </div>
+                            {% endif %}
+
+                            <!-- <button class="w3-text-green btn w3-pale-green btn-lg ml-auto mybtn" id="refresh-account">Refresh</button> -->
+                        </div>
+
+                    </div><br><br>
+                    <div class="w3-card p-4" id="update_account" style="border-radius: 20px;display:none;">
+                        <header id="withdraw-status">
+
+                        </header>
+                        <h3 class="w3-center w3-text-green">Update Account</h3>
+                        <form action="" class="w3-center" id="account_form">
+                            <input type="text" minlength="3" name="account_name" id="account_name" class="amount w3-card" placeholder="Account Name(Full Name)" required><br><br>
+                            <input type="number" minlength="10" maxlength="10" name="account_no" id="account_no" class="amount w3-card" placeholder="Account Number" required><br><br>
+                            <h4 class="w3-text-grey">Country</h4>
+                            <select name="country" id="country" class="currency w3-card " required>
+                            <option value="Nigeria ">Nigeria</option>
+                            <option value="USA ">USA</option>
+                        </select><br>
+                            <h4 class="w3-text-grey ">Bank</h4>
+                            <select name="bank " id="bank" class="currency w3-card " required>
+                            <option value="UBA ">UBA</option>
+                            <option value="First BanK ">First Bank</option>
+                        </select><br><br>
+                            <button type="submit " class="w3-text-green btn w3-pale-green btn-lg " id="withdraw-btn">Update</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-12 col-md-1 ">
+
+
+                </div>
+                <div class="col-12 col-md-6 ">
+                    <div class="w3-card-2 w3-text-red p-4 " id="withdraw">
+                        <h1 class=" ">Transaction History</h1>
+                        <div class="w3-text-grey " id="Investments">
+                            <h4 class="w3-center ">
+                                <b>Investments</b>
+                            </h4>
+                            <ul class="w3-ul ">
+                                <div id="investment_loader">
+
+                                </div>
+                                <ul class="w3-ul " id="investment_list">
+
+                                </ul>
+                                <br>
+                                <button class="w3-text-red btn w3-pale-red btn-lg " id="more_investment">Refresh</button><br><br>
+                                <li class="w3-light-grey w3-text-grey " id="total"><span>Total</span> <span class="w3-right ">00.00</span></li>
+
+                            </ul>
+                        </div><br>
+
+                        <div class="w3-text-grey " id="Investments">
+
+                            <h4 class="w3-center ">
+                                <b>Withdrawals</b>
+                            </h4>
+                            <ul class="w3-ul ">
+                                <div id="withdraw_loader">
+
+                                </div>
+                                <ul class="w3-ul " id="withdraw_list">
+
+                                </ul>
+                                <br>
+                                <button class="w3-text-red btn w3-pale-red btn-lg " id="more_withdraws">Refresh All</button><br><br>
+                                <li class="w3-light-grey w3-text-grey " id="withdraw_total"><span>Total</span> <span class="w3-right ">00.00 USD</span></li>
+                            </ul>
+                        </div><br><br>
+
+                        <div class="w3-center ">
+                            <a href="invest"><button class="w3-text-red btn w3-pale-red btn-lg " id="refresh-balance">Re-invest</button></a>
+                            <a href="withdrawals"><button class="w3-text-red btn w3-pale-red btn-lg ml-5 " id="refresh-balance">Withdraw</button></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><br><br>
+    </div>
+</div>
+{% endblock %}
