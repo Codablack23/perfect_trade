@@ -1,15 +1,24 @@
 from flask import Flask, render_template,redirect,logging,flash,url_for,session,request,jsonify
 from wtforms import Form,StringField,PasswordField,TextAreaField,validators
 from passlib.hash import sha256_crypt
-from perfect_trade import mysql
+from perfect_trade import host,db as dbs,password,port,user as hostuser,charset
 from perfect_trade import app
 from .authorization import Authorize
 import json
 import threading
 import datetime
+import pymysql
+import pymysql.cursors
 
 def getUserData():
-    user_data=mysql.connection.cursor()
+    mysql=pymysql.connect(host=host,
+                      port=port,
+                      uhostser=user,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
+    user_data=mysql.cursor(pymysql.cursors.DictCursor)
     user_data.execute(f"SELECT * FROM perfect_trade_users WHERE Email='{session['Email']}'")
     data=user_data.fetchone()
     return data
@@ -22,6 +31,13 @@ def request_withdraw():
         sent_status={
             "status":"Failed"
         }
+        mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=hostuser,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
         data =dict(request.form)
         amount=data['amount']
         currency=data['currency']
@@ -29,11 +45,11 @@ def request_withdraw():
         fullname=f"{user['Firstname']} {user['Surname']}"
         email=session['Email']
         status='Pending'
-        db=mysql.connection.cursor()
+        db=mysql.cursor(pymysql.cursors.DictCursor)
         query=f"INSERT INTO withdrawals (Name,Email,Amount,Currency,Status) VALUES('{fullname}','{email}','{amount}','{currency}','{status}')"
 
         db.execute(query)
-        db.connection.commit()
+        mysql.commit()
         db.close()
         sent_status['status']='success'
         return json.dumps(sent_status)
@@ -48,8 +64,15 @@ def getBalance():
             "balance":0.00,
             "currency":"USD"
         }
+        mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=hostuser,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
         email=session['Email']
-        db=mysql.connection.cursor()
+        db=mysql.cursor(pymysql.cursors.DictCursor)
         query=f"SELECT * From account WHERE Email='{email}'"
 
         status=db.execute(query)
@@ -62,7 +85,7 @@ def getBalance():
         else:
             return json.dumps(sent_status)
 
-        db.close()
+        mysql.close()
 
 @app.route('/requested_withdraws',methods=['POST'])
 @Authorize
@@ -72,7 +95,14 @@ def getWithdraws():
             'withdraws':""
         }
         email=session['Email']
-        db=mysql.connection.cursor()
+        mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=hostuser,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
+        db=mysql.cursor(pymysql.cursors.DictCursor)
         query=f"SELECT * From withdrawals WHERE Email='{email}'"
 
         status=db.execute(query)
@@ -99,7 +129,7 @@ def getWithdraws():
         else:
             return jsonify(withdraw_dict)
 
-        db.close()
+        mysql.close()
 
 @app.route('/account',methods=['POST'])
 @Authorize
@@ -107,7 +137,14 @@ def getAccounts():
     if request.method == "POST":
         accounts={}
         email=session['Email']
-        db=mysql.connection.cursor()
+        mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=hostuser,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
+        db=mysql.cursor(pymysql.cursors.DictCursor)
         query=f"SELECT * From account_details WHERE Email='{email}'"
 
         status=db.execute(query)
@@ -118,7 +155,7 @@ def getAccounts():
         else:
             return json.dumps(accounts)
 
-        db.close()
+        mysql.close()
 
 @app.route('/investments',methods=['POST'])
 @Authorize
@@ -128,7 +165,14 @@ def getinvestments():
             'investments':""
         }
         email=session['Email']
-        db=mysql.connection.cursor()
+        mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=hostuser,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
+        db=mysql.cursor(pymysql.cursors.DictCursor)
         query=f"SELECT * From investments WHERE Email='{email}'"
 
         status=db.execute(query)
@@ -155,4 +199,4 @@ def getinvestments():
         else:
             return json.dumps(investment_dict)
 
-        db.close()
+        mysql.close()

@@ -1,5 +1,5 @@
 from flask import Flask, render_template,redirect,logging,flash,url_for,session,request,jsonify
-from perfect_trade import mysql
+from perfect_trade import host,db as dbs,password,port,user as hostuser,charset
 from perfect_trade import mail
 from flask_mail import Message
 from perfect_trade import app
@@ -11,23 +11,46 @@ from random import random
 from .authorization import AuthorizeAdmin
 import json
 import threading
+import pymysql
+import pymysql.cursors
 
 def getInfo(query):
-    investment=mysql.connection.cursor()
+    mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=hostuser,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
+    investment=mysql.cursor(pymysql.cursors.DictCursor)
     investment.execute(query)
     data=list(investment.fetchall())
     return data
-    investment.close()
+    mysql.close()
 
 def getAdmin(query):
-    admin=mysql.connection.cursor()
+    mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=hostuser,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
+    admin=mysql.cursor(pymysql.cursors.DictCursor)
     admin.execute(query)
     data=list(admin.fetchall())
     return data
-    investment.close()
+    mysql.close()
 
 def addPromo(title,duration,description):
-    promo=mysql.connection.cursor()
+    mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=hostuser,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
+    promo=mysql.cursor(pymysql.cursors.DictCursor)
     status="Ongoing"
     current_day=datetime.now().day
     day_index=int(duration)%30
@@ -45,66 +68,122 @@ def addPromo(title,duration,description):
     
     query=f"INSERT INTO promos(Promo_Name,Duration_in_Days,Description,Status,Date_to_End) VALUES('{title}','{duration}','{description}','{status}','{end_date}')"
     promo.execute(query)
-    promo.connection.commit()
+    mysql.commit()
     data=promo.rowcount
-    promo.close()
+    mysql.close()
     return data
   
 
 
 def deleteAdmin(Id):
-    admin=mysql.connection.cursor()
+    mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=hostuser,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
+    admin=mysql.cursor(pymysql.cursors.DictCursor)
     admin.execute(f"Delete From perfect_trade_adminstrators WHERE Id ='{Id}'")
-    admin.connection.commit()
+    mysql.commit()
     row=admin.rowcount
     return row
 
 def suspendAdmin(Id,stats):
-    admin=mysql.connection.cursor()
+    mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=hostuser,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
+    admin=mysql.cursor(pymysql.cursors.DictCursor)
     admin.execute(f"UPDATE perfect_trade_adminstrators SET Suspended='{stats}' WHERE Id ='{Id}'")
-    admin.connection.commit()
+    mysql.commit()
     row=admin.rowcount
     return row
 
 
 def accept(Id):
-    admin=mysql.connection.cursor()
+    mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=hostuser,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
+    admin=mysql.cursor(pymysql.cursors.DictCursor)
     admin.execute(f"UPDATE withdrawals SET Status='Accepted' WHERE Id ='{Id}'")
-    admin.connection.commit()
+    mysql.commit()
     row=admin.rowcount
     return row
 def reject(Id):
-    admin=mysql.connection.cursor()
+    mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=hostuser,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
+    admin=mysql.cursor(pymysql.cursors.DictCursor)
     admin.execute(f"UPDATE withdrawals SET Status='Rejected' WHERE Id ='{Id}'")
-    admin.connection.commit()
+    mysql.commit()
     row=admin.rowcount
     return row
 
 def deletePromo(Id):
-    admin=mysql.connection.cursor()
+    mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=hostuser,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
+    admin=mysql.cursor(pymysql.cursors.DictCursor)
     admin.execute(f"Delete From promos WHERE Id ='{Id}'")
-    admin.connection.commit()
+    mysql.commit()
     row=admin.rowcount
     return row
 
 def suspendPromo(Id):
-    admin=mysql.connection.cursor()
+    mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=hostuser,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
+    admin=mysql.cursor(pymysql.cursors.DictCursor)
     admin.execute(f"UPDATE promos SET Status='Suspended' WHERE Id ='{Id}'")
-    admin.connection.commit()
+    mysql.commit()
     row=admin.rowcount
     return row
 
 def resumePromo(Id):
-    admin=mysql.connection.cursor()
+    mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=hostuser,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
+    admin=mysql.cursor(pymysql.cursors.DictCursor)
     admin.execute(f"UPDATE promos SET Status='Ongoing' WHERE Id ='{Id}'")
-    admin.connection.commit()
+    mysql.commit()
     row=admin.rowcount
     return row
 
 def endPromo(Id):
-    admin=mysql.connection.cursor()
+    mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=hostuser,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
+    admin=mysql.cursor(pymysql.cursors.DictCursor)
     admin.execute(f"UPDATE promos SET Status='Ended' WHERE Id ='{Id}'")
-    admin.connection.commit()
+    mysql.commit()
     row=admin.rowcount
     return row
 
@@ -112,14 +191,21 @@ def endPromo(Id):
 def adminLogin():
     if request.method=="POST":
         username=request.form['username']
-        password=request.form['password']
-        db=mysql.connection.cursor()
+        passwords=request.form['password']
+        mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=hostuser,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
+        db=mysql.cursor(pymysql.cursors.DictCursor)
         fetch_query=f'SELECT * FROM perfect_trade_adminstrators WHERE Username="{username}"'
         user=db.execute(fetch_query)
         if user > 0:
             admin=db.fetchone()
             db_password=admin['Password']
-            if sha256_crypt.verify(password,db_password):
+            if sha256_crypt.verify(passwords,db_password):
                 session['admin']=True
                 session['username']=username
                 # return redirect(url_for('Dashboard'))
@@ -203,12 +289,19 @@ def addAdmin():
     app.logger.info(new_data)
     if len(new_data) < 1:
         password=sha256_crypt.encrypt(str(pa))
-        db=mysql.connection.cursor()
+        mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=userhost,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
+        db=mysql.cursor(pymysql.cursors.DictCursor)
         query=f"INSERT INTO perfect_trade_adminstrators(Username, Password, Email,Admin_Name,Superuser,Suspended) VALUES('{username}','{password}','{email}','{name}','{superuser}','{suspended}')"
         db.execute(query)
-        db.connection.commit()
+        mysql.commit()
         count=db.rowcount
-        db.close()
+        mysql.close()
         if count > 0:
             stats["Success"]="True"
         else:

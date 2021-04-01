@@ -1,13 +1,22 @@
 from flask import Flask, render_template,redirect,logging,flash,url_for,session,request,jsonify
 from wtforms import Form,StringField,PasswordField,TextAreaField,validators
 from passlib.hash import sha256_crypt
-from perfect_trade import mysql
+from perfect_trade import host,db as dbs,password,port,user as hostuser,charset
 from perfect_trade import app
 from .authorization import Authorize
 from datetime import datetime
+import pymysql
+import pymysql.cursors
 
 def addInvestment(name,email,duration,amount,currency,plan,returns):
-    promo=mysql.connection.cursor()
+    mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=hostuser,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
+    promo=mysql.cursor(pymysql.cursors.DictCursor)
     status="Ongoing"
     percentage=50
     current_day=datetime.now().day
@@ -25,44 +34,79 @@ def addInvestment(name,email,duration,amount,currency,plan,returns):
     
     query=f"INSERT INTO investments(Name,Duration_Days,Amount,Status,Date_Of_Returns,Percentage,Plan,Currency,Email,Amount_Recieved) VALUES('{name}','{duration}','{amount}','{status}','{end_date}','{percentage}','{plan}','{currency}','{email}','{returns}')"
     promo.execute(query)
-    promo.connection.commit()
+    mysql.commit()
     data=promo.rowcount
-    promo.close()
+    mysql.close()
     return data
 
 def getUserData():
-    user_data=mysql.connection.cursor()
+    mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=hostuser,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
+    user_data=mysql.cursor(pymysql.cursors.DictCursor)
     user_data.execute(f"SELECT * FROM perfect_trade_users WHERE Email='{session['Email']}'")
     data=user_data.fetchone()
     return data
-    user_data.close()
+    mysql.close()
 
 def getinvestments():
-    db=mysql.connection.cursor()
+    mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=hostuser,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
+    db=mysql.cursor(pymysql.cursors.DictCursor)
     db.execute(f'SELECT * FROM investments WHERE Email="{session["Email"]}"')
     data=db.fetchall()
     return data
 
 def getAccountDetails():
-    user_data=mysql.connection.cursor()
+    mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=hostuser,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
+    user_data=mysql.cursor(pymysql.cursors.DictCursor)
     user_data.execute(f"SELECT * FROM account_details WHERE Email='{session['Email']}'")
     data=user_data.fetchone()
     return data
     user_data.close()
 
 def getAccount(email):
-    user_data=mysql.connection.cursor()
+    mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=hostuser,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
+    user_data=mysql.cursor(pymysql.cursors.DictCursor)
     data= user_data.execute(f"SELECT * FROM account_details WHERE Email='{email}'")
     return data
     user_data.close()
 
 def endInvestment(Id,status):
-    connect =mysql.connection.cursor()
+    mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=hostuser,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
+    connect =mysql.cursor(pymysql.cursors.DictCursor)
     query=f"UPDATE investments SET Status='{status}' WHERE Id='{Id}'"
-    connect.execute(query)
-    connect.connection.commit()
-    count=connect.rowcount
-    connect.close
+    connect.ehostxecute(query)
+    mysql.commit()
+    count=conhostnect.rowcount
+    mysql.close
 
 
 @app.route("/dashboard/")
@@ -141,11 +185,19 @@ def withdrawal():
 @app.route("/dashboard/accounts", methods=['GET','POST'])
 @Authorize
 def accounts():
+    mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=hostuser,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
     if request.method=="POST":
         stats={
           "Success":""
         }
-        db=mysql.connection.cursor()
+       
+        db=mysql.cursor(pymysql.cursors.DictCursor)
         data=request.form
         account_number=data['account_number']
         account_name=data['account_name']
@@ -154,8 +206,9 @@ def accounts():
         email=session["Email"]
         check=getAccount(email)
         if check > 0:
+            
             db.execute(f"UPDATE account_details SET Name='{account_name}', Account_No='{account_number}',Bank='{bank}' WHERE Email='{session['Email']}'")
-            db.connection.commit()
+            mysql.commit()
             count=db.rowcount
             if count >0:
                 stats["Success"]="True"
@@ -165,7 +218,7 @@ def accounts():
         else:
             query=f"INSERT INTO account_details (Name,Account_No,Bank,Email,Account_Name) VALUES('{account_name}','{account_number}','{bank}','{email}','{account_name}')"
             db.execute(query)
-            db.connection.commit()
+            mysql.commit()
             count=db.rowcount
             if count >0:
                 stats["Success"]="True"
@@ -173,16 +226,16 @@ def accounts():
                 stats["Success"]="True"
                 stats["Error"]="An Error Has Occured"
                 app.logger.info(db.connection.error)
-        db.close()
+        mysql.close()
         return jsonify(stats)
+    user_data=mysql.cursor(pymysql.cursors.DictCursor)
     user=getUserData()
-    user_data=mysql.connection.cursor()
     mylist= user_data.execute(f"SELECT * FROM account_details WHERE Email='{session['Email']}'")
     data=""
     length=False
     if mylist>0:
         data=user_data.fetchone()
-        user_data.close()
+        mysql.close()
         length=True
     else:
         length=False
@@ -200,7 +253,7 @@ def charts():
 @Authorize
 def getApi():
     apis={
-      "public_key": 'pk_test_a6808fe6b78ec1ff545c54baaaa6ba990d7bc60d',
+      "public_key": 'pk_live_c354c6e98a480c1374b6da9544dbab6f83f5ffa4',
       "api_key":'22e8c7fda4cc950b8a9f'
     }
     return jsonify(apis)
@@ -217,9 +270,16 @@ def changePassword():
         new_password=request.form['new_password']
         if sha256_crypt.verify(old_password,user['Password']):
             updated_password=sha256_crypt.encrypt(new_password)
-            db=mysql.connection.cursor()
+            mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=hostuser,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
+            db=mysql.cursor(pymysql.cursors.DictCursor)
             db.execute(f'UPDATE perfect_trade_users SET Password="{updated_password}" WHERE Email="{email}" ')
-            db.connection.commit()
+            mysql.commit()
             flash(f"You have successfully Changed Your Password  Your New Password is '{new_password}' Please Do Not Share with Anyone","green")
 
             redirect(url_for('changePassword'))

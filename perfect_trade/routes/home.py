@@ -2,7 +2,8 @@ from flask import Flask, render_template,redirect,logging,flash,url_for,session,
 from wtforms import Form,StringField,PasswordField,TextAreaField,validators
 from passlib.hash import sha256_crypt
 from perfect_trade import app
-from perfect_trade import mysql
+from perfect_trade import host,db,password,port,user,charset
+import pymysql
 from perfect_trade import mail
 from flask_mail import Message
 import json
@@ -17,7 +18,14 @@ def contact():
        "status":""
    }
    if request.method=="POST":
-        db=mysql.connection.cursor()
+        mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=user,
+                      password=password,
+                      db=db,
+                      charset=charset,
+                      )
+        db=mysql.cursor()
         app.logger.info(request.form)
         data=dict(request.form)
       
@@ -29,7 +37,7 @@ def contact():
         message=data['message']
         query=f"INSERT INTO messages (Email,Message,Firstname,Lastname,Subject) VALUES('{email}','{message}','{firstname}','{lastname}','{subject}')"
         db.execute(query)
-        db.connection.commit()
+        mysql.commit()
         count=db.rowcount
         if count>0:
             sat={
@@ -38,14 +46,14 @@ def contact():
             new_msg=Message()
             new_msg.subject=subject
             new_msg.body=message
-            new_msg.recipients=['perfecttrade.com@gmail.com']
+            new_msg.recipients=['perfecttrades.com@gmail.com']
             new_msg.sender=f'{firstname} {lastname} From Perfect Trade'
             mail.send(new_msg)  
         else:
             sat={
              "status":"Failed"
             }
-        db.close()
+        mysql.close()
       
        
         return json.dumps(sat)

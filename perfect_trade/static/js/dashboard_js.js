@@ -6,6 +6,28 @@ let dollar_rate = 382
 var public_key = ""
 var api_key = ""
 
+let currentPlan = ""
+let minimum_value = 250
+
+function selectPlan(index, plan, Name) {
+    $(document).ready(() => {
+        $(`.${Name}`).eq(index).addClass("w3-pale-green w3-text-green")
+
+        console.log($(`.${Name}`).eq(index))
+        const nums = [0, 1, 2]
+        const min = [270, 1000, 10000]
+        for (let i = 0; i < nums.length; i++) {
+            if (i != index) {
+                $(`.${Name}`).eq(i).removeClass("w3-pale-green w3-text-green")
+
+            }
+        }
+        minimum_value = min[index] * dollar_rate
+        currentPlan = plan
+
+        document.getElementById('payment_amount').min = minimum_value
+    })
+}
 
 
 $(document).ready(() => {
@@ -80,19 +102,24 @@ $(document).ready(() => {
                 var elements = ""
                 var total = 0
                 var currency = "USD"
-                data.investments.forEach((i) => {
-                    elements += `
+                if (data.investments.length > 0) {
+                    data.investments.forEach((i) => {
+                        elements += `
                  <li class="w3-animate-opacity"><span class="w3-right"><span>${i.amount}</span> <span>${i.currency}</span></span> <span class="">${i.date_invested}</span></li>
                  `
-                    total += i.amount
-                    currency = i.currency
-                })
-                $("#investment_list").replaceWith(`
+                        total += i.amount
+                        currency = i.currency
+                    })
+                    $("#investment_list").replaceWith(`
                   <ul class="w3-ul">
                   ${elements}  
                   </ul>
                 `)
-                $('#total').replaceWith(`<li class="w3-light-grey w3-text-grey w3-animate-opacity"id="total"><span>Total</span> <span class="w3-right">${total} ${currency} </span></li>`)
+                    $('#total').replaceWith(`<li class="w3-light-grey w3-text-grey w3-animate-opacity"id="total"><span>Total</span> <span class="w3-right">${total} ${currency} </span></li>`)
+
+                } else {
+
+                }
             },
             error: (err) => {
                 // console.log(err)
@@ -140,29 +167,35 @@ $(document).ready(() => {
                 var total = 0
                 var curr = "USD"
                     // console.log(data)
-                data.withdraws.forEach((withdraw) => {
-                        tr += `
-                   <tr>
-                    <td>${withdraw.amount}</td>
-                    <td>${withdraw.currency}</td>
-                    <th>${withdraw.date}</th>
-                    <td><button class="w3-pale-yellow btn w3-text-yellow">${withdraw.status}</button></td>
-                </tr>
-                   `
-                        withdraw_list += `<li class="w3-animate-opacity"><span class="w3-right"><span>${withdraw.amount}</span> <span>${withdraw.currency}</span></span> <span class="">${withdraw.date}</span></li>`
-                        curr = withdraw.currency
-                        total += withdraw.amount
-                    })
-                    // console.log(tr)
-                $('#tb-content').replaceWith(`
-                <tbody class="w3-animate-opacity" id="tb-content">
-                   ${tr}
-                </tbody>   `)
-                $('#withdraw_list').replaceWith(`
-                <ul class="w3-ul w3-animate-opacity" id="withdraw_list">
-               ${ withdraw_list}
-                </ul>`)
-                $('#withdraw_total').replaceWith(`<li class="w3-light-grey w3-text-grey w3-animate-opacity" id="withdraw_total"><span>Total</span> <span class="w3-right">${total} ${curr}</span></li>`)
+                if (data.withdraws.length > 0) {
+                    data.withdraws.forEach((withdraw) => {
+                            tr += `
+               <tr>
+                <td>${withdraw.amount}</td>
+                <td>${withdraw.currency}</td>
+                <th>${withdraw.date}</th>
+                <td><button class="w3-pale-yellow btn w3-text-yellow">${withdraw.status}</button></td>
+            </tr>
+               `
+                            withdraw_list += `<li class="w3-animate-opacity"><span class="w3-right"><span>${withdraw.amount}</span> <span>${withdraw.currency}</span></span> <span class="">${withdraw.date}</span></li>`
+                            curr = withdraw.currency
+                            total += withdraw.amount
+                        })
+                        // console.log(tr)
+                    $('#tb-content').replaceWith(`
+            <tbody class="w3-animate-opacity" id="tb-content">
+               ${tr}
+            </tbody>   `)
+                    $('#withdraw_list').replaceWith(`
+            <ul class="w3-ul w3-animate-opacity" id="withdraw_list">
+           ${ withdraw_list}
+            </ul>`)
+                    $('#withdraw_total').replaceWith(`<li class="w3-light-grey w3-text-grey w3-animate-opacity" id="withdraw_total"><span>Total</span> <span class="w3-right">${total} ${curr}</span></li>`)
+
+                } else {
+
+
+                }
             },
             error: (err) => {
 
@@ -404,25 +437,6 @@ $(document).ready(() => {
         }
 
     })
-    let currentPlan = ""
-    let minimum_value = 250
-    const selectPlan = (index, plan, Name) => {
-        $(`.${Name}`).eq(index).addClass("w3-pale-green w3-text-green")
-
-        console.log($(`.${Name}`).eq(index))
-        const nums = [0, 1, 2]
-        const min = [270, 1000, 10000]
-        for (let i = 0; i < nums.length; i++) {
-            if (i != index) {
-                $(`.${Name}`).eq(i).removeClass("w3-pale-green w3-text-green")
-
-            }
-        }
-        minimum_value = min[index] * dollar_rate
-        currentPlan = plan
-
-        document.getElementById('payment_amount').min = minimum_value
-    }
 
 
     $('.paystack_payment_form').submit(() => {

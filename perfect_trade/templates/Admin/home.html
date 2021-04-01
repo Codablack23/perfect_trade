@@ -18,7 +18,7 @@
                     <h3 class="w3-text-green">Requested Withdraws</h3>
                     <div class="w3-text-grey">
                         <ul class="w3-ul">
-                            {% for i in range(2) %}
+                            {% if withdraws %} {% for i in range(2) %}
                             <li class="">
                                 <h3 class="">{{withdraws[i]["Name"]}}</h3>
                                 <div class="withdraw-details w3-medium w3-text-green"><span class="w3-right"><span class="w3-text-green">{{withdraws[i]["Amount"]}}</span> <span class="w3-text-green">{{withdraws[i]["Currency"]}}</span></span> <span class="">{{withdraws[i]["Date"].strftime("%c")}}</span></div>
@@ -30,18 +30,24 @@
                                 </div>
                             </li>
                             {% endfor %}
+                            <div class="w3-center">
+                                <a href="withdraws"><button class="btn w3-pale-blue w3-text-blue btn-lg">Show All Withdraws</button></a>
+                            </div>
+                            {% else %}
+                            <div class="w3-center p-5">
+                                <h3 class="w3-text-light-grey">No Withdraws Yet</h3>
+                            </div>
+                            {% endif %}
                         </ul>
                     </div>
-                    <div class="w3-center">
-                        <a href="withdraws"><button class="btn w3-pale-blue w3-text-blue btn-lg">Show All Withdraws</button></a>
-                    </div>
+
                 </div><br>
                 <!-- Recent investments -->
                 <div class="w3-card p-2 w3-text-grey">
                     <h3 class="w3-text-green">Recent Investments</h3>
                     <div class="w3-text-grey">
                         <ul class="w3-ul">
-                            {% for investment in investments %}
+                            {% if investments %} {% for investment in investments %}
                             <li class="">
                                 <div>
                                     <div class="name">
@@ -62,12 +68,19 @@
                                     </div>
                                 </div>
                             </li>
+
                             {% endfor %}
+                            <div class="w3-center">
+                                <a href="investments"><button class="btn w3-pale-blue w3-text-blue btn-lg">Show All Investment</button></a>
+                            </div>
+                            {% else %}
+                            <div class="w3-center p-5">
+                                <h3 class="w3-text-light-grey">No Investments Yet</h3>
+                            </div>
+                            {% endif %}
                         </ul>
                     </div>
-                    <div class="w3-center">
-                        <a href="investments"><button class="btn w3-pale-blue w3-text-blue btn-lg">Show All Investment</button></a>
-                    </div>
+
                 </div>
 
             </div>

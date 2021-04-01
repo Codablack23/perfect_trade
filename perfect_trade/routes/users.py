@@ -1,5 +1,5 @@
 from flask import Flask, render_template,redirect,logging,flash,url_for,session,request
-from perfect_trade import mysql
+from perfect_trade import host,db as dbs,password,port,user as users,charset
 from perfect_trade import mail
 from flask_mail import Message
 from perfect_trade import app
@@ -11,6 +11,8 @@ from random import random
 from .authorization import Authorize,AuthorizeSignUp,AuthorizePassChange
 import json
 import threading
+import pymysql
+import pymysql.cursors
 
 @app.route("/signup", methods=["GET", "POST"])
 def SignUp():
@@ -20,15 +22,22 @@ def SignUp():
     customer_id=f'salemfx/{date}/{random_number}'
 
     if request.method=="POST" and form.validate():
+        mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=users,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
         surname=form.surname.data
         firstname=form.firstName.data
         email=form.email.data
-        password=sha256_crypt.hash(str(form.password.data))
+        passwords=sha256_crypt.hash(str(form.password.data))
 
         
 
         find_query=f"SELECT * FROM perfect_trade_users WHERE Email= '{email}' OR (Surname='{surname}' AND Firstname='{firstname}')"
-        db=mysql.connection.cursor()
+        db=mysql.cursor(pymysql.cursors.DictCursor)
         res= db.execute(find_query)
         if res >0:
              db.close()
@@ -39,7 +48,7 @@ def SignUp():
                 'surname':surname,
                 'firstname':firstname,
                 'email': email,
-                'password':  password
+                'password':  passwords
                 }
                 session['details']=details
                 raw_pin=int(random()*1000000)
@@ -68,35 +77,54 @@ def SignUp():
 @app.route("/login", methods=["GET", "POST"])
 def LogIn():
     if request.method=="POST":
+        mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=users,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
         email=request.form['email']
         recieved_password=request.form['password']
-        db=mysql.connection.cursor()
+        db=mysql.cursor(pymysql.cursors.DictCursor)
         fetch_query=f'SELECT * FROM perfect_trade_users WHERE Email="{email}"'
         user=db.execute(fetch_query)
         if user > 0:
             data=db.fetchone()
             db_password=data['Password']
+            app.logger.info(data['Password'])
+            app.logger.info(sha256_crypt.hash(recieved_password))
             if sha256_crypt.verify(recieved_password,db_password):
                 session['logged_in']=True
                 session['Email']=email
+                mysql.close()
                 return redirect(url_for('Dashboard'))
+                return "logged In"
             else:
                  flash("Password Does Not Match User","red")
                  app.logger.info("PASSWORD INCORRECT")
-            db.close()
+                 mysql.close()
         else:
             flash("User Does Not Exist","red")
-
+            mysql.close()
       
     return render_template('User/login.html', Page="Login")
+
 
 @app.route("/forgotpassword", methods=["GET", "POST"])
 def forgotPassword():
         if request.method=="POST":
+            mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=users,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
             email=request.form['email']
             letters=['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p']
             pin=f"{letters[int(random()*len(letters))]}{int(random()*len(letters))}{letters[int(random()*len(letters))]}{int(random()*len(letters))}{letters[int(random()*len(letters))]}{int(random()*len(letters))}"
-            db=mysql.connection.cursor()
+            db=mysql.cursor(pymysql.cursors.DictCursor)
             user=db.execute(f"SELECT * FROM perfect_trade_users WHERE Email='{email}'")
             if user > 0:
                 session['recovery']=True
@@ -144,7 +172,14 @@ def confirm_email():
          "status":""
       }
       if request.method=="POST":
-        db=mysql.connection.cursor()
+        mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=users,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
+        db=mysql.cursor(pymysql.cursors.DictCursor)
         info=dict(request.form)
         user_pin=info['pin']
 
@@ -153,16 +188,17 @@ def confirm_email():
         firstname=details['firstname']   
         surname=details['surname']    
         email=details['email']
-        password=sha256_crypt.encrypt(details['password'])
-        customer_id=['customer_id']
+        passwords=sha256_crypt.encrypt(details['password'])
+        customer_id=f'salemfx/{firstname}{surname}/{user_pin}'
 
-        add_query=f'INSERT INTO perfect_trade_users(Firstname, Surname, Email, Password, Customer_ID) VALUES("{firstname}","{surname}","{email}","{password}","{customer_id}")'     
-        add_query=f'INSERT INTO account(Name, Email, Balance,Currency) VALUES("{firstname+surname}","{email}","{0.00}","USD")'    
+        add_query=f'INSERT INTO perfect_trade_users(Firstname, Surname, Email, Password, Customer_ID) VALUES("{firstname}","{surname}","{email}","{passwords}","{customer_id}")'     
+        add_query2=f'INSERT INTO account(Name, Email, Balance,Currency) VALUES("{firstname+surname}","{email}","{0.00}","USD")'    
         if user_pin == session['pin']:
              db.execute(add_query)
-             db.connection.commit()
+             db.execute(add_query2)
+             mysql.commit()
              count=db.rowcount
-             db.close()
+             mysql.close()
             #  flash("You Have Registered Sucessfully You can Now Login ", "green")
              if count > 0:
                 del(session['details'])
@@ -194,18 +230,25 @@ def passwordGenLogin():
 
         }
     if request.method=="POST":
+        mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=users,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
         data=dict(request.form)
         email=session['recovery_email']
         pin=data['r_pin']
         new_password=data['new_password']
         confirmed=data['confirm_password']
-        db=mysql.connection.cursor()
+        db=mysql.cursor(pymysql.cursors.DictCursor)
 
         if pin == session['recovery_pin']:
             if confirmed == new_password:
                 updated_password=sha256_crypt.encrypt(new_password)
                 db.execute(f'UPDATE perfect_trade_users SET Password="{updated_password}" WHERE Email="{email}" ')
-                db.connection.commit()
+                mysql.commit()
                 count = db.rowcount
                 if count > 0:
                     new_message['message']=f"You have successfully Changed Your Password  Your New Password is '{new_password}' Please Do Not Share with Anyone"
@@ -220,6 +263,6 @@ def passwordGenLogin():
                  flash("Passwords Do Not Match","red")
         else:
             flash("Incorrect Pin","red")
-        db.close()
+        mysql.close()
     return render_template('User/fp_login.html', Page="Recovery Login",message=new_message)
 

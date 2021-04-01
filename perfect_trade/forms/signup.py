@@ -1,4 +1,3 @@
-from perfect_trade import mysql
 from wtforms import Form,StringField,PasswordField,TextAreaField,validators
 import re
 from passlib.hash import sha256_crypt
