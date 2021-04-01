@@ -4,9 +4,10 @@ from flask_mail import Mail
 
 app = Flask(__name__)
 secret_key="qwertyuiopasdfghjkl11"
-app.config['MYSQL_HOST']= "localhost"
-app.config['MYSQL_USER']= "root"
-app.config['MYSQL_PASSWORD']= ""
+app.config['MYSQL_HOST']=163.123.183.85
+app.config['MYSQL_PORT']=26183
+app.config['MYSQL_USER']= "perfect_trade"
+app.config['MYSQL_PASSWORD']= "perfect_trade"
 app.config['MYSQL_DB']="perfect_trade_db"
 app.config['MYSQL_CURSORCLASS'] ="DictCursor"
 mysql=MySQL(app)
