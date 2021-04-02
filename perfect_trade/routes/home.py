@@ -2,12 +2,11 @@ from flask import Flask, render_template,redirect,logging,flash,url_for,session,
 from wtforms import Form,StringField,PasswordField,TextAreaField,validators
 from passlib.hash import sha256_crypt
 from perfect_trade import app
-from perfect_trade import host,db,password,port,user,charset
-import pymysql
+from perfect_trade import host,db as dbs,password,port,user as users,charset
 from perfect_trade import mail
 from flask_mail import Message
 import json
-
+import pymysql
 @app.route("/")
 def Landing():
     return render_template("index.html", Page="Home")
@@ -20,9 +19,9 @@ def contact():
    if request.method=="POST":
         mysql=pymysql.connect(host=host,
                       port=port,
-                      user=user,
+                      user=users,
                       password=password,
-                      db=db,
+                      db=dbs,
                       charset=charset,
                       )
         db=mysql.cursor()
