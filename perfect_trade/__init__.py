@@ -23,6 +23,7 @@ from flask_mail import Mail
 #         connect.close()
 
 app = Flask(__name__)
+app.secret_key="b'bV/\x1d\xc1\xf9\x96i\x15\xaa\xe9\x85A\xb0+Y\x11&\x111cz?+'"
 secret_key="qwertyuiopasdfghjkl11"
 host="mysql-26183-0.cloudclusters.net"
 port=26183
