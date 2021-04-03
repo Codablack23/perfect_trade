@@ -6,7 +6,7 @@ from perfect_trade import app
 from .authorization import Authorize
 from datetime import datetime
 import pymysql
-import pymysql.cursors
+
 
 def addInvestment(name,email,duration,amount,currency,plan,returns):
     mysql=pymysql.connect(host=host,
