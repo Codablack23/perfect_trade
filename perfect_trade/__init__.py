@@ -27,8 +27,8 @@ app.secret_key=os.environ['SECRET_KEY']
 secret_key="qwertyuiopasdfghjkl11"
 host="mysql-26183-0.cloudclusters.net"
 port=26183
-user="perfect-trades"
-password="perfect_trade"
+user=os.environ['MY_SQL_USERNAME']
+password=os.environ['MY_SQL_PASSWORD']
 db='perfect_trade_db'
 charset='utf8mb4'
 # cur=pymysql.cursors.DictCursor
@@ -45,8 +45,8 @@ charset='utf8mb4'
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = "goodluckedih@gmail.com"
-app.config['MAIL_PASSWORD'] = "codablack23"
+app.config['MAIL_USERNAME'] =os.environ['EMAIL_USERNAME']
+app.config['MAIL_PASSWORD'] = os.environ['EMAIL_PASSWORD']
 mail = Mail(app)
 
 
