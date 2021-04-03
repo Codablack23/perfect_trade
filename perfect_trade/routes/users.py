@@ -10,8 +10,9 @@ from datetime import datetime
 from random import random
 from .authorization import Authorize,AuthorizeSignUp,AuthorizePassChange
 import json
+import threading
 import pymysql
-
+import pymysql.cursors
 
 @app.route("/signup", methods=["GET", "POST"])
 def SignUp():
