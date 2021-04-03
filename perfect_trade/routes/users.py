@@ -60,7 +60,7 @@ def SignUp():
                 msg.subject="Email Verification"
                 msg.body=f"Your Email Verification Pin is {pin} This Pin Will Expire In Five Minutes"
                 msg.recipients=[email]
-                msg.sender="goodluckedih@gmail.com"
+                msg.sender="Perfect Trades"
                 try:
                     mail.send(msg)
                     return redirect(url_for("confirm_email"))
@@ -135,7 +135,7 @@ def forgotPassword():
                 new_msg.subject="Password Recovery"
                 new_msg.body=f"Your Recovery Pin is {pin} Do Not Share Your Pin Use This To Change Your Password"
                 new_msg.recipients=[email]
-                new_msg.sender="Perfect Trade"
+                new_msg.sender="Perfect Trades"
              
                 try:
                     mail.send(new_msg)
