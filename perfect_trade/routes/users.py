@@ -10,7 +10,6 @@ from datetime import datetime
 from random import random
 from .authorization import Authorize,AuthorizeSignUp,AuthorizePassChange
 import json
-import threading
 import pymysql
 
 
