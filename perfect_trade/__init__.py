@@ -34,8 +34,8 @@ charset='utf8mb4'
 # cur=pymysql.cursors.DictCursor
 # app.config['MYSQL_HOST']="https://mysql-26183-0.cloudclusters.net"
 # app.config['MYSQL_PORT']=26183
-# app.config['MYSQL_USER']= "perfect_trade"
-# app.config['MYSQL_PASSWORD']= "perfect_trade"
+# app.config['MYSQL_USER']= os.environ['MY_SQL_USERNAME']
+# app.config['MYSQL_PASSWORD']= os.environ['MY_SQL_PASSWORD']
 # app.config['MYSQL_DB']="perfect_trade_db"
 # app.config['MYSQL_CURSORCLASS'] ="DictCursor"
 
