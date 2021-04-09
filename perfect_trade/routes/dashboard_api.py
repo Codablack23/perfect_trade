@@ -13,7 +13,7 @@ import pymysql.cursors
 def getUserData():
     mysql=pymysql.connect(host=host,
                       port=port,
-                      user=hostuser,
+                      uhostser=user,
                       password=password,
                       db=dbs,
                       charset=charset,

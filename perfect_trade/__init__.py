@@ -1,7 +1,7 @@
 from flask import Flask
 # from flask_mysqldb import MySQL
 from flask_mail import Mail
-import os
+
 # class MysqlConnection(object):
 #     def __init__(self):
 #         self.host ="mysql-26183-0.cloudclusters.net"
@@ -23,19 +23,19 @@ import os
 #         connect.close()
 
 app = Flask(__name__)
-app.secret_key=os.environ['SECRET_KEY']
+app.secret_key="b'bV/\x1d\xc1\xf9\x96i\x15\xaa\xe9\x85A\xb0+Y\x11&\x111cz?+'"
 secret_key="qwertyuiopasdfghjkl11"
 host="mysql-26183-0.cloudclusters.net"
 port=26183
-user=os.environ['MY_SQL_USERNAME']
-password=os.environ['MY_SQL_PASSWORD']
+user="perfect-trades"
+password="perfect_trade"
 db='perfect_trade_db'
 charset='utf8mb4'
 # cur=pymysql.cursors.DictCursor
 # app.config['MYSQL_HOST']="https://mysql-26183-0.cloudclusters.net"
 # app.config['MYSQL_PORT']=26183
-# app.config['MYSQL_USER']= os.environ['MY_SQL_USERNAME']
-# app.config['MYSQL_PASSWORD']= os.environ['MY_SQL_PASSWORD']
+# app.config['MYSQL_USER']= "perfect_trade"
+# app.config['MYSQL_PASSWORD']= "perfect_trade"
 # app.config['MYSQL_DB']="perfect_trade_db"
 # app.config['MYSQL_CURSORCLASS'] ="DictCursor"
 
@@ -45,8 +45,8 @@ charset='utf8mb4'
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] =os.environ['EMAIL_USERNAME']
-app.config['MAIL_PASSWORD'] = os.environ['EMAIL_PASSWORD']
+app.config['MAIL_USERNAME'] = "goodluckedih@gmail.com"
+app.config['MAIL_PASSWORD'] = "codablack23"
 mail = Mail(app)
 
 

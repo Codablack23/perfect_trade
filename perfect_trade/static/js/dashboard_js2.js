@@ -7,7 +7,10 @@ var public_key = ""
 var api_key = ""
 
 let currentPlan = ""
-let minimum_value = 250
+let minimum_value = 270
+let max_value = 999
+let percentage = 1.5 * (30 / 100)
+
 
 function selectPlan(index, plan, Name) {
     $(document).ready(() => {
@@ -15,22 +18,31 @@ function selectPlan(index, plan, Name) {
 
         console.log($(`.${Name}`).eq(index))
         const nums = [0, 1, 2]
-        const min = [270, 1000, 10000]
+        const percent = [1.5, 2.0, 2.5, 3.0]
+        const min = [270, 1000, 10000, 100000]
+        const max = [999, 9999, 99999, 999999]
         for (let i = 0; i < nums.length; i++) {
             if (i != index) {
                 $(`.${Name}`).eq(i).removeClass("w3-pale-green w3-text-green")
 
             }
         }
-        minimum_value = min[index] * dollar_rate
+        minimum_value = min[index]
+        max_value = max[index]
         currentPlan = plan
+        percentage = percent[index] * (30 / 100)
 
         document.getElementById('payment_amount').min = minimum_value
+        document.getElementById('payment_amount').max = max_value
     })
 }
 
 
 $(document).ready(() => {
+    $('#Close_tab').click(() => {
+        $('.main_form').fadeIn()
+        $('.crypto_details').fadeOut()
+    })
     $.ajax({
         url: 'api_keys',
         dataType: "JSON",
@@ -448,43 +460,65 @@ $(document).ready(() => {
             }, 3000)
         } else {
             const email = document.querySelector('#payment_email').value
-            const amount = document.querySelector('#payment_amount').value * 100
+            const amount = document.querySelector('#payment_amount').value
             const new_currency = document.querySelector('#payment_currency').value
-            returns = amount * (5 / 10)
-            let setup = PaystackPop.setup({
-                key: public_key, // Replace with your public key
-                email,
-                amount, // the amount value is multiplied by 100 to convert to the lowest currency unit
-                currency: 'NGN',
-                callback: function(response) {
-                    console.log(returns)
-                    console.log(amount)
-                    $.ajax({
-                            url: 'invest',
-                            dataType: "JSON",
-                            data: {
-                                "email": email,
-                                "amount": amount,
-                                "currency": new_currency,
-                                "returns": amount + returns,
-                                "Duration": 70,
-                                "plan": currentPlan
-                            },
-                            type: "POST",
-                            success: (result) => {
-                                console.log(result)
-                            },
-                        })
-                        //this happens after the payment is completed successfully
-                        // var reference = response.reference;
-                        // alert('Payment complete! Reference: ' + reference);
-                        // Make an AJAX call to your server with the reference to verify the transaction
-                },
-                onClose: function() {
+            returns = amount * percentage
+            $.ajax({
+                    url: 'invest',
+                    dataType: "JSON",
+                    data: {
+                        "email": email,
+                        "amount": amount,
+                        "currency": new_currency,
+                        "returns": parseFloat(amount) + parseFloat(returns),
+                        "Duration": 30,
+                        "plan": currentPlan,
+                        "percent": percentage
+                    },
+                    type: "POST",
+                    success: (result) => {
+                        if (result.Success == true) {
+                            $('.main_form').fadeOut()
+                            $('.crypto_details').fadeIn()
+                        } else {
+                            alert('An Error Occurred ')
+                        }
+                    },
+                })
+                // let setup = PaystackPop.setup({
+                //     key: public_key, // Replace with your public key
+                //     email,
+                //     amount, // the amount value is multiplied by 100 to convert to the lowest currency unit
+                //     currency: 'NGN',
+                //     callback: function(response) {
+                //         console.log(returns)
+                //         console.log(amount)
+                //         $.ajax({
+                //                 url: 'invest',
+                //                 dataType: "JSON",
+                //                 data: {
+                //                     "email": email,
+                //                     "amount": amount,
+                //                     "currency": new_currency,
+                //                     "returns": amount + returns,
+                //                     "Duration": 70,
+                //                     "plan": currentPlan
+                //                 },
+                //                 type: "POST",
+                //                 success: (result) => {
+                //                     console.log(result)
+                //                 },
+                //             })
+                //             //this happens after the payment is completed successfully
+                //             // var reference = response.reference;
+                //             // alert('Payment complete! Reference: ' + reference);
+                //             // Make an AJAX call to your server with the reference to verify the transaction
+                //     },
+                //     onClose: function() {
 
-                },
-            });
-            setup.openIframe();
+            //     },
+            // });
+            // setup.openIframe();
         }
     })
     $('#edit-account').click(() => {

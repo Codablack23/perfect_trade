@@ -6,9 +6,11 @@ from perfect_trade import app
 from .authorization import Authorize
 from datetime import datetime
 import pymysql
+from perfect_trade import mail
+from flask_mail import Message
 import pymysql.cursors
 
-def addInvestment(name,email,duration,amount,currency,plan,returns):
+def addInvestment(name,email,duration,amount,currency,plan,returns,percent):
     mysql=pymysql.connect(host=host,
                       port=port,
                       user=hostuser,
@@ -18,7 +20,7 @@ def addInvestment(name,email,duration,amount,currency,plan,returns):
                       )
     promo=mysql.cursor(pymysql.cursors.DictCursor)
     status="Ongoing"
-    percentage=50
+    percentage=percent
     current_day=datetime.now().day
     day_index=int(duration)%30
     end_day=current_day + day_index
@@ -103,9 +105,9 @@ def endInvestment(Id,status):
                       )
     connect =mysql.cursor(pymysql.cursors.DictCursor)
     query=f"UPDATE investments SET Status='{status}' WHERE Id='{Id}'"
-    connect.ehostxecute(query)
+    connect.execute(query)
     mysql.commit()
-    count=conhostnect.rowcount
+    count=connect.rowcount
     mysql.close
 
 
@@ -165,11 +167,18 @@ def invest():
       new_email=data['email']
       duration=data['Duration']
       plan=data['plan']
-      new_investment=addInvestment(fullname,new_email,duration,amount,currency,plan,returns)
+      percent=data['percent']
+      new_investment=addInvestment(fullname,new_email,duration,amount,currency,plan,returns,percent)
       if new_investment > 0:
           status['Success']=True
+          new_msg=Message()
+          new_msg.subject="Starting Investment"
+          new_msg.body=f'{fullname} from Perfect Trade is About To Make an Investment Of {amount} {currency} through the BTC or Etherum Address You will Recieve A Payment Soon'
+          new_msg.recipients=['perfecttrades.com@gmail.com']
+          new_msg.sender=f'{fullname} From Perfect Trade'
+          mail.send(new_msg)  
       else :
-          status['Success']=True
+          status['Success']=False
           status['error']="An Error Occured"
       return jsonify(status)
     return render_template('Dashboard/invest.html', Page="Invest", fullname=fullname, user=user)
