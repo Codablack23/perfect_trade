@@ -1,4 +1,16 @@
 $(document).ready(() => {
+    $('#show_bronze').click(() => {
+            $('#hidden-message-bronze').slideToggle()
+        }),
+        $('#show_silver').click(() => {
+            $('#hidden-message-silver').slideToggle()
+        }),
+        $('#show_gold').click(() => {
+            $('#hidden-message-gold').slideToggle()
+        }),
+        $('#show_diamond').click(() => {
+            $('#hidden-message-diamond').slideToggle()
+        })
     let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     numbers.forEach(number => {
         $('#more-' + number).click(() => {
