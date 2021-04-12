@@ -9,7 +9,7 @@ var api_key = ""
 let currentPlan = ""
 let minimum_value = 270
 let max_value = 999
-let percentage = 1.5 * (30 / 100)
+var percentage = ''
 
 
 function selectPlan(index, plan, Name) {
@@ -17,8 +17,8 @@ function selectPlan(index, plan, Name) {
         $(`.${Name}`).eq(index).addClass("w3-pale-green w3-text-green")
 
         console.log($(`.${Name}`).eq(index))
-        const nums = [0, 1, 2]
-        const percent = [1.5, 2.0, 2.5, 3.0]
+        const nums = [0, 1, 2, 3]
+        const percent = [10, 15, 20, 25]
         const min = [270, 1000, 10000, 100000]
         const max = [999, 9999, 99999, 999999]
         for (let i = 0; i < nums.length; i++) {
@@ -30,7 +30,7 @@ function selectPlan(index, plan, Name) {
         minimum_value = min[index]
         max_value = max[index]
         currentPlan = plan
-        percentage = percent[index] * (30 / 100)
+        percentage = percent[index]
 
         document.getElementById('payment_amount').min = minimum_value
         document.getElementById('payment_amount').max = max_value

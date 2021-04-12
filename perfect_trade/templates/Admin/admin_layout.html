@@ -13,14 +13,14 @@
     <link rel="stylesheet" href="{{url_for('static', filename='css/admin.css')}}">
 </head>
 
-<body class="">
+<body class="bg-dark">
     <div class="w3-overlay"></div>
-    <div> {% include 'Admin/components/navigation.html' %}</div>
+    <div class="bg-dark"> {% include 'Admin/components/navigation.html' %}</div>
     {% include 'Admin/components/menu.html' %} {% block admin_dashboard %} {% endblock %}
 </body>
 <script src="{{url_for('static', filename='js/jquery.js')}}"></script>
 <script src="{{url_for('static', filename='bootstrap/js/bootstrap.js')}}"></script>
+<script src="{{url_for('static', filename='js/admin1.js')}}"></script>
 
-<script src="{{url_for('static', filename='js/admin.js')}}"></script>
 
 </html>

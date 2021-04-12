@@ -18,7 +18,7 @@
                     <h3 class="w3-text-green">Requested Withdraws</h3>
                     <div class="w3-text-grey">
                         <ul class="w3-ul">
-                            {% if withdraws %} {% for i in range(2) %}
+                            {% if withdraws %} {% for i in range(0,length) %}
                             <li class="">
                                 <h3 class="">{{withdraws[i]["Name"]}}</h3>
                                 <div class="withdraw-details w3-medium w3-text-green"><span class="w3-right"><span class="w3-text-green">{{withdraws[i]["Amount"]}}</span> <span class="w3-text-green">{{withdraws[i]["Currency"]}}</span></span> <span class="">{{withdraws[i]["Date"].strftime("%c")}}</span></div>
@@ -29,7 +29,7 @@
 
                                 </div>
                             </li>
-                            {% endfor %}
+                            {% if i > 3 %} {% endif %} {% endfor %}
                             <div class="w3-center">
                                 <a href="withdraws"><button class="btn w3-pale-blue w3-text-blue btn-lg">Show All Withdraws</button></a>
                             </div>
@@ -47,28 +47,31 @@
                     <h3 class="w3-text-green">Recent Investments</h3>
                     <div class="w3-text-grey">
                         <ul class="w3-ul">
-                            {% if investments %} {% for investment in investments %}
+                            {% if investments %} {% for i in range(0,ln) %} {% if i > 3%}
+                            <div>
+
+                            </div>
+                            {% endif %}
                             <li class="">
                                 <div>
                                     <div class="name">
-                                        <h3 class="">{{investment["Name"]}}</h3>
-                                        <h5>{{investment["Plan"]}}</h5>
+                                        <h3 class="">{{investments[i]["Name"]}}</h3>
+                                        <h5>{{investments[i]["Plan"]}}</h5>
                                         <div class="d-flex">
-                                            <h5>{{investment["Percentage"]}}%</h5>
-                                            <h5 class="ml-auto">{{investment["Duration(Days)"]}} Days</h5>
+                                            <h5>{{investments[i]["Percentage"]}}%</h5>
+                                            <h5 class="ml-auto">{{investments[i]["Duration(Days)"]}} Days</h5>
                                         </div>
                                         <div class="d-flex">
-                                            <h5 class="w3-text-green">{{investment["Amount"]}} {{investment["Currency"]}}</h5>
-                                            <h5 class="w3-text-green ml-auto">{{investment["Amount_Recieved"]}} {{investment["Currency"]}}</h5>
+                                            <h5 class="w3-text-green">{{investments[i]["Amount"]}} {{investments[i]["Currency"]}}</h5>
+                                            <h5 class="w3-text-green ml-auto">{{investments[i]["Amount_Recieved"]}} {{investments[i]["Currency"]}}</h5>
                                         </div>
                                         <div class="d-flex">
-                                            <h5 class="">{{investment["Date_Invested"]}}</h5>
-                                            <h5 class="ml-auto">{{investment["Date_Of_Returns"]}}</h5>
+                                            <h5 class="">{{investments[i]["Date_Invested"]}}</h5>
+                                            <h5 class="ml-auto">{{investments[i]["Date_Of_Returns"]}}</h5>
                                         </div>
                                     </div>
                                 </div>
                             </li>
-
                             {% endfor %}
                             <div class="w3-center">
                                 <a href="investments"><button class="btn w3-pale-blue w3-text-blue btn-lg">Show All Investment</button></a>

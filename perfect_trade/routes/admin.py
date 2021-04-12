@@ -28,6 +28,37 @@ def getInfo(query):
     return data
     mysql.close()
 
+def confirm_investment(Id):
+    date=datetime.now()
+    current_day=datetime.now().day
+    duration=7*30
+    day_index=int(duration)%30
+    end_day=current_day + int(day_index)
+    month_index=int(duration)//30
+    end_month=datetime.now().month + month_index
+    end_year=datetime.now().year
+    if end_month > 12:
+        endmonth -=12
+        end_year += endmonth-12
+    if end_day > 30:
+        end_day-=30
+  
+    end_date=datetime(end_year, end_month, end_day)
+    query=f'UPDATE investments SET Payment_Status="Paid",Date_Invested="{date}",Date_Of_Returns="{end_date}" WHERE Id="{Id}"'
+    mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=hostuser,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
+    investment=mysql.cursor(pymysql.cursors.DictCursor)
+    investment.execute(query)
+    mysql.commit()
+    data=investment.rowcount
+    return data
+    mysql.close()
+
 def getAdmin(query):
     mysql=pymysql.connect(host=host,
                       port=port,
@@ -225,7 +256,9 @@ def AdminDashboard():
     clients=getInfo("SELECT * FROM perfect_trade_users")
     all_withdraws=getInfo("SELECT * FROM withdrawals") 
     all_investments=getInfo("SELECT * FROM investments")
-    return render_template("Admin/home.html", Page="Dashboard",Clients=clients,withdraws=all_withdraws,investments=all_investments)
+    all_length=len(all_withdraws)
+    i_length=len(all_investments)
+    return render_template("Admin/home.html", Page="Dashboard",Clients=clients,withdraws=all_withdraws,investments=all_investments,length=all_length,ln=i_length)
 
 @app.route('/admin/withdraws')
 @AuthorizeAdmin
@@ -421,6 +454,22 @@ def endPromos():
             stats["Success"]="False"
         
     return jsonify(stats)
+
+@app.route("/admin/investment.confirmation", methods=["POST"])
+def confirmInvestmentPayment(): 
+    stats={
+        "Success":""
+    }
+    if request.method=="POST":
+        i_id=request.form['id']
+        confirm=confirm_investment(i_id)
+        if confirm > 0:
+            stats['Success']="True"
+        else:
+             stats['Success']="False"
+    return jsonify(stats)
+
+        
 
 @app.route("/admin/accept", methods=["POST"])
 def acceptWithdraw():

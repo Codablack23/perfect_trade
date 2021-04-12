@@ -10,7 +10,7 @@ from perfect_trade import mail
 from flask_mail import Message
 import pymysql.cursors
 
-def addInvestment(name,email,duration,amount,currency,plan,returns,percent):
+def addInvestment(name,email,duration,amount,currency,plan,returns,percent,payment_stats):
     mysql=pymysql.connect(host=host,
                       port=port,
                       user=hostuser,
@@ -34,7 +34,7 @@ def addInvestment(name,email,duration,amount,currency,plan,returns,percent):
         end_day-=30
     end_date=datetime(end_year, end_month, end_day)
     
-    query=f"INSERT INTO investments(Name,Duration_Days,Amount,Status,Date_Of_Returns,Percentage,Plan,Currency,Email,Amount_Recieved) VALUES('{name}','{duration}','{amount}','{status}','{end_date}','{percentage}','{plan}','{currency}','{email}','{returns}')"
+    query=f"INSERT INTO investments(Name,Duration_Days,Amount,Status,Date_Of_Returns,Percentage,Plan,Currency,Email,Amount_Recieved,Payment_Status) VALUES('{name}','{duration}','{amount}','{status}','{end_date}','{percentage}','{plan}','{currency}','{email}','{returns}','{payment_stats}')"
     promo.execute(query)
     mysql.commit()
     data=promo.rowcount
@@ -126,10 +126,11 @@ def Dashboard():
             endInvestment(investment['Id'],'Ongoing')
     fullname=f"{user['Firstname']} {user['Surname']}"
     for invest in investments:
-        if invest['Status']=="Ongoing":
+        if invest['Status']=="Ongoing" and invest['Payment_Status']=="Paid":
             ongoing.append(invest)
         else:
-            Completed.append(invest)
+            if invest['Status']=="Completed":
+               Completed.append(invest)
   
     ongoingLength=len(ongoing)
     completedLength=len(Completed)
@@ -168,7 +169,8 @@ def invest():
       duration=data['Duration']
       plan=data['plan']
       percent=data['percent']
-      new_investment=addInvestment(fullname,new_email,duration,amount,currency,plan,returns,percent)
+      payment_stats="Not Paid"
+      new_investment=addInvestment(fullname,new_email,duration,amount,currency,plan,returns,percent,payment_stats)
       if new_investment > 0:
           status['Success']=True
           new_msg=Message()

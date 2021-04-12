@@ -23,6 +23,11 @@
                                 <h5 class="ml-auto">{{investment["Date_Of_Returns"]}}</h5>
                             </div>
                         </div>
+                        <div class="btn d-flex">
+                            <button class="btn w3-pale-green w3-text-green border-radius" onclick="confirmInvestment({{investment['Id']}})">Confirm Payment</button> {% if investment['Payment_Status'] != "Paid" %}
+                            <button class="btn w3-pale-yellow w3-text-yellow border-radius ml-auto">Pending</button> {% else %}
+                            <button class="btn w3-pale-green w3-text-green border-radius ml-auto">Paid</button> {% endif %}
+                        </div>
                     </div>
                 </li>
                 {% endfor %}

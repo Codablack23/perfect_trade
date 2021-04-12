@@ -1,4 +1,27 @@
   $(document).ready(() => {
+      confirmInvestment = (id) => {
+          if (confirm('Do you Want To Confirm Investment')) {
+
+              $.ajax({
+                  url: 'investment.confirmation',
+                  type: "POST",
+                  data: {
+                      id
+                  },
+                  success: (res) => {
+                      if (res.Success == "True") {
+                          alert("Investment Confirmed")
+                      } else {
+                          alert("couldn't Confirm Investment an Error Occurred")
+                      }
+                  }
+              })
+
+
+          } else {
+              alert('Confirmation Cancelled')
+          }
+      }
       const functions = {
           new_admin_email: (val, id) => {
 
