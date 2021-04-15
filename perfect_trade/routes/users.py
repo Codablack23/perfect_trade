@@ -143,7 +143,7 @@ def forgotPassword():
     
                 except Exception as error:
                     app.logger.info(error)
-                    flash(error, "red")
+                    flash("Sorry It Seems an Error Occured", "red")
             else:
                 flash("User Does Not Exist","red")
 
