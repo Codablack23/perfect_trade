@@ -45,8 +45,8 @@ charset='utf8mb4'
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = os.environ['EMAIL_USERNAME']
-app.config['MAIL_PASSWORD'] = os.environ['EMAIL_PASSWORD']
+app.config['MAIL_USERNAME'] = "goodluckedih@gmail.com"
+app.config['MAIL_PASSWORD'] = "codablack23"
 mail = Mail(app)
 
 
