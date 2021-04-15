@@ -18,7 +18,7 @@ function selectPlan(index, plan, Name) {
 
         console.log($(`.${Name}`).eq(index))
         const nums = [0, 1, 2, 3]
-        const percent = [10, 15, 20, 25]
+        const percent = [15, 20, 25, 30]
         const min = [270, 1000, 10000, 100000]
         const max = [999, 9999, 99999, 999999]
         for (let i = 0; i < nums.length; i++) {

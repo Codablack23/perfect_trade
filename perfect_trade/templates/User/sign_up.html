@@ -2,21 +2,27 @@
 <div class="login-container">
     {% include 'User/components/navigation.html' %} {% from 'User/components/helper.html' import render_field %}
     <div class="container signup-form">
-        <div class="w3-card card">
+        <div class="">
             {% include 'User/components/messages.html'%}
-            <header class="w3-center mt-2">
+            <header class="w3-center mt-5">
+                <div class="w3-text-green">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" fill="currentColor" class="bi bi-person-plus" viewBox="0 0 16 16">
+                        <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                        <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+                      </svg>
+                </div>
                 <h3 class="w3-text-green">Sign Up</h3>
-                <p class="w3-text-grey w3-small w3-margin">Hello there! Register And Get Your Investing Started </p>
+                <p class="w3-text-white w3-small w3-margin">Hello there! Register And Get Your Investing Started </p>
 
             </header>
-            <form action="" method="POST" class="container w3-padding w3-center w3-text-grey">
+            <form action="" method="POST" class="container w3-center w3-text-grey">
                 <ci>{{ render_field(form.surname,minLength='3', class_="signup-inputs validate",id="s_name", placeholder="Surname")}}</ci>
-                <p class="w3-small w3-text-red" id="s_name_err"></p>
+                <span class="w3-small w3-text-red" id="s_name_err"></span>
                 <ci>{{ render_field(form.firstName,minLength='3', class_="signup-inputs validate",id="f_name",placeholder="First Name")}}</ci>
-                <p class="w3-small w3-text-red" id="f_name_err"></p>
+                <span class="w3-small w3-text-red" id="f_name_err"></span>
                 <ci>{{ render_field(form.email, type="email", class_="signup-inputs ", placeholder="Email")}}</ci>
                 <ci> {{ render_field(form.password,minLength='8', class_="signup-inputs validate",id="password", placeholder="Choose A Password")}}</ci>
-                <p class="w3-small w3-text-red" id="password_err"></p>
+                <span class="w3-small w3-text-red" id="password_err"></span>
                 <ci>{{ render_field(form.confirm_password,minLength='8', class_="signup-inputs ", placeholder="Confirm Password")}}</ci>
                 <!-- <input type="email" name="email" id="email" class="signup-inputs password " placeholder="Email"><br>
                 <input type="password" name="password" id="password" class="signup-inputs password " placeholder="Password"><br>
@@ -24,7 +30,7 @@
                 <input type="password" name="password" id="password" class="signup-inputs password " placeholder="Password"><br>
 
                 <br> -->
-                <button class="w3-button w3-green submit-btn w3-hover-pale-green w3-hover-text-green">Register</button><br>
+                <button class="w3-button w3-green w3-text-white submit-btn w3-hover-white w3-text-green w3-hover-text-green w3-text-green">Register</button><br>
                 <a href="/login" class="w3-text-green">Back To Login</a>
             </form>
         </div>

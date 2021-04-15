@@ -2,11 +2,16 @@
 <div class="login-container">
     {% include 'User/components/navigation.html' %}
     <div class="container form">
-        <div class="w3-card card">
+        <div class="">
             {% include 'User/components/messages.html'%}
             <header class="w3-center mt-2">
-                <h3 class="w3-text-green">Member Login</h3>
-                <p class="w3-text-grey w3-small w3-margin">Welcome Back! Login To Your Account and Start Investing </p>
+                <div class="w3-text-green">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                      </svg>
+                </div>
+                <h2 class="w3-text-green">Member Login</h2>
+                <h6 class="w3-text-white w3-small w3-margin">Welcome Back! Login To Your Account and Start Investing </h6>
 
             </header>
             <form method="POST" action="" class="container w3-padding w3-center w3-text-grey">
@@ -14,8 +19,8 @@
                 <input type="password" name="password" id="password" class="login-inputs password mb-2" placeholder="Password"><br>
 
                 <br>
-                <button class="w3-button w3-green submit-btn w3-hover-pale-green w3-hover-text-green">Login</button><br>
-                <a href="/forgotpassword" class="w3-text-green">forgot Password?</a>
+                <button class="w3-button w3-green submit-btn w3-hover-white w3-hover-text-green">Login</button><br>
+                <a href="/forgotpassword" class="w3-text-white">forgot Password?</a>
             </form>
         </div>
     </div>

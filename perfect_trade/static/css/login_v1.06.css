@@ -12,6 +12,14 @@ input {
     font-family: product;
 }
 
+body {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('../images/n_img.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
 .form {
     width: 40%;
     margin: 10% auto;

@@ -1,6 +1,7 @@
 from flask import Flask
 # from flask_mysqldb import MySQL
 from flask_mail import Mail
+import os
 
 # class MysqlConnection(object):
 #     def __init__(self):
@@ -24,7 +25,6 @@ from flask_mail import Mail
 
 app = Flask(__name__)
 app.secret_key="b'bV/\x1d\xc1\xf9\x96i\x15\xaa\xe9\x85A\xb0+Y\x11&\x111cz?+'"
-secret_key="qwertyuiopasdfghjkl11"
 host="mysql-26183-0.cloudclusters.net"
 port=26183
 user="perfect-trades"
@@ -45,8 +45,8 @@ charset='utf8mb4'
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = "goodluckedih@gmail.com"
-app.config['MAIL_PASSWORD'] = "codablack23"
+app.config['MAIL_USERNAME'] = "perfecttrades.com@gmail.com"
+app.config['MAIL_PASSWORD'] = "0772721587"
 mail = Mail(app)
 
 

@@ -8,6 +8,11 @@
     src: url('../webfonts/Adriana.ttf')
 }
 
+.welcome {
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('../images/n_img.jpg') no-repeat right fixed;
+    background-size: cover;
+}
+
 html,
 h2,
 h1,
@@ -19,11 +24,19 @@ div,
 p,
 span,
 input {
-    font-family: product;
+    font-family: product, sans-serif;
 }
 
 .salem-font {
     font-family: salemFont, sans-serif;
+}
+
+body {
+    background-color: white;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
 }
 
 .welcome {
@@ -32,7 +45,7 @@ input {
     background-size: cover;
     opacity: 0.9; */
     min-height: 100vh;
-    border-radius: 30px;
+    border-radius: 0px 0px 30px 30px;
 }
 
 .welcome-text {
