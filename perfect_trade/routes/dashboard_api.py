@@ -13,7 +13,7 @@ import pymysql.cursors
 def getUserData():
     mysql=pymysql.connect(host=host,
                       port=port,
-                      uhostser=user,
+                      user=hostuser,
                       password=password,
                       db=dbs,
                       charset=charset,
@@ -45,8 +45,9 @@ def request_withdraw():
         fullname=f"{user['Firstname']} {user['Surname']}"
         email=session['Email']
         status='Pending'
+        date=data['w_date']
         db=mysql.cursor(pymysql.cursors.DictCursor)
-        query=f"INSERT INTO withdrawals (Name,Email,Amount,Currency,Status) VALUES('{fullname}','{email}','{amount}','{currency}','{status}')"
+        query=f"INSERT INTO withdrawals (Name,Email,Amount,Currency,Status,Date) VALUES('{fullname}','{email}','{amount}','{currency}','{status}','{date}')"
 
         db.execute(query)
         mysql.commit()

@@ -9,8 +9,10 @@ import pymysql
 from perfect_trade import mail
 from flask_mail import Message
 import pymysql.cursors
+import json
 
-def addInvestment(name,email,duration,amount,currency,plan,returns,percent,payment_stats):
+def addInvestment(name,email,duration,amount,currency,plan,returns,percent,payment_stats,user_date):
+    investment_duration=int(duration)*30
     mysql=pymysql.connect(host=host,
                       port=port,
                       user=hostuser,
@@ -19,12 +21,17 @@ def addInvestment(name,email,duration,amount,currency,plan,returns,percent,payme
                       charset=charset,
                       )
     promo=mysql.cursor(pymysql.cursors.DictCursor)
+    date_day=user_date['day']
+    date_year=int(user_date['Year'])-2000
+    date_month=f"{user_date['month']+1}"
+    new_date=f'{date_day}/{date_month}/{date_year} 00:00:00'
+    investment_date=datetime.strptime(new_date,'%d/%m/%y %H:%M:%S')
     status="Ongoing"
     percentage=percent
-    current_day=datetime.now().day
-    day_index=int(duration)%30
+    current_day=investment_date.day
+    day_index=int(investment_duration)%30
     end_day=current_day + day_index
-    month_index=int(duration)//30
+    month_index=int(investment_duration)//30
     end_month=datetime.now().month + month_index
     end_year=datetime.now().year
     if end_month > 12:
@@ -34,7 +41,8 @@ def addInvestment(name,email,duration,amount,currency,plan,returns,percent,payme
         end_day-=30
     end_date=datetime(end_year, end_month, end_day)
     
-    query=f"INSERT INTO investments(Name,Duration_Days,Amount,Status,Date_Of_Returns,Percentage,Plan,Currency,Email,Amount_Recieved,Payment_Status) VALUES('{name}','{duration}','{amount}','{status}','{end_date}','{percentage}','{plan}','{currency}','{email}','{returns}','{payment_stats}')"
+    
+    query=f"INSERT INTO investments(Name,Duration_Days,Amount,Status,Date_Of_Returns,Percentage,Plan,Currency,Email,Amount_Recieved,Payment_Status,Date_Invested) VALUES('{name}','{duration}','{amount}','{status}','{end_date}','{percentage}','{plan}','{currency}','{email}','{returns}','{payment_stats}','{investment_date}')"
     promo.execute(query)
     mysql.commit()
     data=promo.rowcount
@@ -162,15 +170,21 @@ def invest():
           "Success":False
       }
       data=dict(request.form)
+      app.logger.info(data)
       amount=data['amount']
       returns=data['returns']
       currency=data['currency']
       new_email=data['email']
       duration=data['Duration']
       plan=data['plan']
+      i_date={
+          'day':data["User_date[day]"],
+          'month':int(data['User_date[month]']),
+          'Year':data['User_date[Year]']
+      }
       percent=data['percent']
       payment_stats="Not Paid"
-      new_investment=addInvestment(fullname,new_email,duration,amount,currency,plan,returns,percent,payment_stats)
+      new_investment=addInvestment(fullname,new_email,duration,amount,currency,plan,returns,percent,payment_stats,i_date)
       if new_investment > 0:
           status['Success']=True
           new_msg=Message()

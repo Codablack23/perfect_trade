@@ -218,6 +218,8 @@ $(document).ready(() => {
         event.preventDefault()
         amount = document.querySelector('#amount').value
         currency = document.querySelector('#currency').value
+        w_date = document.querySelector('#withdraw_date').value
+
 
         $.ajax({
             beforeSend: () => {
@@ -233,7 +235,8 @@ $(document).ready(() => {
             type: "POST",
             data: {
                 amount,
-                currency
+                currency,
+                w_date
             },
             dataType: "JSON",
             success: (data) => {
@@ -461,7 +464,9 @@ $(document).ready(() => {
         } else {
             const email = document.querySelector('#payment_email').value
             const amount = document.querySelector('#payment_amount').value
+            const i_date = document.querySelector('#investment_date').value
             const new_currency = document.querySelector('#payment_currency').value
+            const new_date = new Date(i_date)
             returns = amount * percentage
             $.ajax({
                     url: 'invest',
@@ -471,9 +476,14 @@ $(document).ready(() => {
                         "amount": amount,
                         "currency": new_currency,
                         "returns": parseFloat(amount) + parseFloat(returns),
-                        "Duration": 30,
+                        "Duration": 7,
                         "plan": currentPlan,
-                        "percent": percentage
+                        "percent": percentage,
+                        "User_date": {
+                            "day": new_date.getDate(),
+                            "month": parseInt(new_date.getMonth()),
+                            "Year": new_date.getFullYear()
+                        }
                     },
                     type: "POST",
                     success: (result) => {
