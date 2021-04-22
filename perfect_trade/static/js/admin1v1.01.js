@@ -11,6 +11,7 @@
                   success: (res) => {
                       if (res.Success == "True") {
                           alert("Investment Confirmed")
+                          location.reload()
                       } else {
                           alert("couldn't Confirm Investment an Error Occurred")
                       }
