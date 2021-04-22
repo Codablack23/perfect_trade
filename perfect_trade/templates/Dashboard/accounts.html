@@ -6,22 +6,88 @@
             <div class="row">
                 <div class="col-12 col-md-5 mb-3">
                     <div class="w3-card border-radius p-4 w3-text-green mt-md-5" id="account_details">
-                        <h2 class="w3-center">Account Details</h2>
+                        <h2 class="w3-center">Withdrawal Account Details</h2><br>
                         <div>
+                            <h4 class="w3-text-red">Bank Details:</h4>
                             {% if L == True %}
                             <ul class="w3-ul w3-meduim">
                                 <li class="">Acc No: <span class="w3-right">{{accounts['Account_No']}}</span></li>
                                 <li class="">Name: <span class="w3-right">{{accounts["Name"]}}</span></li>
                                 <li class="">Bank: <span class="w3-right">{{accounts['Bank']}}</span></li>
                             </ul><br><br>
-                            <button class="w3-text-green btn w3-pale-green btn-lg mybtn" id="edit-account">Edit</button> {% else %}
+                            <button class="w3-text-green btn w3-pale-green btn-lg mybtn" id="edit-account">Edit Bank Details</button> {% else %}
                             <div class="w3-text-light-grey w3-center p-5">
                                 <h4 class="p-5">YoU Have Not Added Your Account Details</h4>
-                                <button class="w3-text-green btn w3-pale-green btn-lg mybtn" id="edit-account">Add Account Details</button>
+                                <button class="w3-text-green btn w3-pale-green btn-lg mybtn" id="edit-account">Add Bank Details</button>
                             </div>
                             {% endif %}
 
                             <!-- <button class="w3-text-green btn w3-pale-green btn-lg ml-auto mybtn" id="refresh-account">Refresh</button> -->
+                        </div><br>
+                        <div id="crypto-wallets">
+                            <h4 class="w3-text-red">Crypto Wallets:</h4>
+                            <form action="" class="btc-form">
+                                <span>BTC:</span>
+                                <span class="btn w3-pale-green w3-text-green w3-round" id="edit-btc">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                                      </svg>
+                                    </span>
+                                <span class="btn w3-pale-green w3-text-green w3-round" id="check_edit_btc" style="display: none;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
+                                        <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                                      </svg>
+                                </span>
+                                <input type="text" id="btc-input" value="{{btc['Wallet_ID']}}" name="btc-wallet" class="w3-border w3-border-light-grey w3-round" style="width: 65%;" readonly required>
+                                <button type="submit" class="btn w3-pale-green w3-text-green w3-round" id="submit-btc">
+                                    <span style="display: none;"id="btc-spinner">
+                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                        <span class="sr-only">Loading...</span>
+                                    </span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-arrow-bar-right" viewBox="0 0 16 16" id="btc-send">
+                                        <path fill-rule="evenodd" d="M6 8a.5.5 0 0 0 .5.5h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L12.293 7.5H6.5A.5.5 0 0 0 6 8zm-2.5 7a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5z"/>
+                                      </svg>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-check2-all btc-db-check" viewBox="0 0 16 16" style="display: none;">
+                                        <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l7-7zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0z"/>
+                                        <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708z"/>
+                                      </svg>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="red" class="bi bi-exclamation-triangle" viewBox="0 0 16 16" id="btc-err" style="display: none;">
+                                        <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z"/>
+                                        <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995z"/>
+                                      </svg>
+                                </button>
+                            </form><br>
+                            <form action="" class="eth-form">
+                                <span>ETH:</span>
+                                <span class="btn w3-pale-green w3-text-green w3-round" id="edit-ether">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                                      </svg>
+                                    </span>
+                                <span class="btn w3-pale-green w3-text-green w3-round" id="check_edit_eth" style="display: none;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
+                                            <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                                          </svg>
+                                    </span>
+                                <input type="text" id='ether-input' name="ether-wallet" value="{{etherum['Wallet_ID']}}" class="w3-border w3-border-light-grey w3-round" required style="width: 65%;" readonly>
+                                <button type="submit" class="btn w3-pale-green w3-text-green w3-round" id="submit-ether">
+                                    <span style="display:none" id="eth-spinner">
+                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                        <span class="sr-only">Loading...</span>
+                                    </span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-arrow-bar-right" viewBox="0 0 16 16" id="eth-send">
+                                        <path fill-rule="evenodd" d="M6 8a.5.5 0 0 0 .5.5h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L12.293 7.5H6.5A.5.5 0 0 0 6 8zm-2.5 7a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5z"/>
+                                      </svg>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-check2-all eth-db-check" viewBox="0 0 16 16" style="display: none;">
+                                        <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l7-7zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0z"/>
+                                        <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708z"/>
+                                      </svg>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="red" class="bi bi-exclamation-triangle" viewBox="0 0 16 16" id="eth-err" style="display: none;">
+                                        <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z"/>
+                                        <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995z"/>
+                                      </svg>
+                                </button>
+                            </form>
                         </div>
 
                     </div><br><br>
@@ -39,10 +105,7 @@
                             <option value="USA/Europe">USA/Europe</option>
                         </select><br>
                             <h4 class="w3-text-grey ">Bank</h4>
-                            <select name="bank " id="bank" class="currency w3-card " required>
-                            <option value="UBA ">UBA</option>
-                            <option value="First BanK ">First Bank</option>
-                        </select><br><br>
+                            <input type="text" name="bank" id="bank" class="currency w3-card " placeholder="Add Bank Name" required><br><br>
                             <button type="submit " class="w3-text-green btn w3-pale-green btn-lg " id="withdraw-btn">Update</button>
                         </form>
                     </div>

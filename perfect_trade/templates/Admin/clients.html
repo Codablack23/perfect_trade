@@ -21,9 +21,22 @@
                     <h2 class="w3-center">{{account["Name"]}} </h2>
                     <hr>
                     <div>
+                        <h2 class="w3-text-green">Bank Details</h2>
                         <h4>{{account["Account_Name"]}} </h4>
                         <h4>{{account["Account_No"]}} </h4>
                         <h4>{{account["Bank"]}} </h4>
+                        <div class="crypto">
+                            <h3 class="w3-text-green">Crypto Wallets</h3>
+                            {% for b in btc %} {% if b['Email'] == account['Email'] %}
+                            <h4><span class="w3-text-red">BTC:</span>{{b['Wallet_ID']}}</h4>
+
+                            {% endif %} {% endfor %}
+                            <div>
+                                {% for e in etherum %} {% if e['Email'] == account['Email'] %}
+                                <h4><span class="w3-text-red">ETHERUM:</span>{{e['Wallet_ID']}}</h4>
+                                {% endif %} {% endfor %}
+                            </div>
+                        </div>
 
                     </div>
                 </div><br> {% endfor %}

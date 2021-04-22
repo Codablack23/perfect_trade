@@ -175,7 +175,19 @@ def deletePromo(Id):
     mysql.commit()
     row=admin.rowcount
     return row
-
+def getWallets(wallet_type):
+    mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=hostuser,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
+    user_data=mysql.cursor(pymysql.cursors.DictCursor)
+    user_data.execute(f"SELECT * FROM crypto_wallet WHERE  Wallet_Type='{wallet_type}'")
+    data=user_data.fetchall()
+    return data
+    mysql.close()
 def suspendPromo(Id):
     mysql=pymysql.connect(host=host,
                       port=port,
@@ -270,8 +282,12 @@ def adminWithdraws():
 @AuthorizeAdmin
 def adminClients():
     account_info=getInfo("SELECT * FROM account_details")
+    btc_wallet=getWallets("BTC")
+    eth_wallet=getWallets("ETHERUM")
     All_clients=getInfo("SELECT * FROM perfect_trade_users")
-    return render_template("Admin/clients.html", Page="Investors",Clients=All_clients,accounts=account_info)
+    app.logger.info(btc_wallet)
+    app.logger.info(eth_wallet)
+    return render_template("Admin/clients.html", Page="Investors",Clients=All_clients,accounts=account_info,btc=btc_wallet,etherum=eth_wallet)
 
 @app.route('/admin/investments')
 @AuthorizeAdmin

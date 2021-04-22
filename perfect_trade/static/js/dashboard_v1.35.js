@@ -39,6 +39,30 @@ function selectPlan(index, plan, Name) {
 
 
 $(document).ready(() => {
+    $('#edit-btc').click(() => {
+        var btc_edit = document.querySelector('#btc-input')
+        btc_edit.readOnly = false
+        $('#edit-btc').fadeOut()
+        $('#check_edit_btc').fadeIn()
+    })
+    $('#edit-ether').click(() => {
+        var eth_edit = document.querySelector('#ether-input')
+        eth_edit.readOnly = false
+        $('#edit-ether').fadeOut()
+        $('#check_edit_eth').fadeIn()
+    })
+    $('#check_edit_btc').click(() => {
+        var btc_edit = document.querySelector('#btc-input')
+        btc_edit.readOnly = true
+        $('#check_edit_btc').fadeOut()
+        $('#edit-btc').fadeIn()
+    })
+    $('#check_edit_eth').click(() => {
+        var eth_edit = document.querySelector('#ether-input')
+        eth_edit.readOnly = true
+        $("#check_edit_eth").fadeOut()
+        $('#edit-ether').fadeIn()
+    })
     $('#Close_tab').click(() => {
         $('.main_form').fadeIn()
         $('.crypto_details').fadeOut()
@@ -116,11 +140,14 @@ $(document).ready(() => {
                 var currency = "USD"
                 if (data.investments.length > 0) {
                     data.investments.forEach((i) => {
-                        elements += `
-                 <li class="w3-animate-opacity"><span class="w3-right"><span>${i.amount}</span> <span>${i.currency}</span></span> <span class="">${i.date_invested}</span></li>
-                 `
-                        total += i.amount
-                        currency = i.currency
+                        if (i.payment_status == 'Paid') {
+
+                            elements += `
+                        <li class="w3-animate-opacity"><span class="w3-right"><span>${i.amount}</span> <span>${i.currency}</span></span> <span class="">${i.date_invested}</span></li>
+                        `
+                            total += i.amount
+                            currency = i.currency
+                        } else {}
                     })
                     $("#investment_list").replaceWith(`
                   <ul class="w3-ul">
@@ -471,6 +498,11 @@ $(document).ready(() => {
             $.ajax({
                     url: 'invest',
                     dataType: "JSON",
+                    beforeSend: () => {
+                        $('.main_form').fadeOut()
+                        $('#id01').fadeIn()
+
+                    },
                     data: {
                         "email": email,
                         "amount": amount,
@@ -488,7 +520,7 @@ $(document).ready(() => {
                     type: "POST",
                     success: (result) => {
                         if (result.Success == true) {
-                            $('.main_form').fadeOut()
+                            $('#id01').fadeOut()
                             $('.crypto_details').fadeIn()
                         } else {
                             alert('An Error Occurred ')
@@ -535,5 +567,85 @@ $(document).ready(() => {
         $('#update_account').slideToggle()
     })
 
+    $('.btc-form').submit(() => {
+        event.preventDefault()
+        var btc_wallet = document.querySelector('#btc-input').value
+        $.ajax({
+            url: "addWallet",
+            beforeSend: () => {
+                $('#btc-send').fadeOut()
+                $('#btc-spinner').fadeIn()
+
+            },
+            data: {
+                "wallet_id": btc_wallet,
+                "wallet_type": "BTC"
+            },
+            dataType: "JSON",
+            type: "POST",
+            success: (data) => {
+                var new_data = data
+                if (new_data.Status == "Success") {
+                    $('#btc-spinner').fadeOut()
+                    $('.btc-db-check').fadeIn()
+                    setTimeout(() => {
+                        $('.btc-db-check').fadeOut()
+                        $('#btc-send').fadeIn()
+                    }, 6000)
+                } else {
+                    $('#btc-spinner').fadeOut()
+                    $('#btc-err').fadeIn()
+                    setTimeout(() => {
+                        $('#btc-err').fadeOut()
+                        $('#btc-send').fadeIn()
+                    }, 3000)
+                }
+            },
+            error: (err) => {
+                console.log(err)
+            }
+
+        })
+    })
+    $('.eth-form').submit(() => {
+        event.preventDefault()
+        var eth_wallet = document.querySelector('#ether-input').value
+        $.ajax({
+            url: "addWallet",
+            beforeSend: () => {
+                $('#eth-send').fadeOut()
+                $('#eth-spinner').fadeIn()
+            },
+            data: {
+                "wallet_id": eth_wallet,
+                "wallet_type": "ETHERUM"
+            },
+            dataType: "JSON",
+            type: "POST",
+            success: (data) => {
+                var new_data = data
+                if (new_data.Status == "Success") {
+                    $('#eth-spinner').fadeOut()
+                    $('.eth-db-check').fadeIn()
+                    setTimeout(() => {
+                        $('.eth-db-check').fadeOut()
+                        $('#eth-send').fadeIn()
+                    }, 3000)
+                } else {
+                    $('.eth-spinner').fadeOut()
+                    $('#eth-err').fadeIn()
+                    setTimeout(() => {
+                        $('#eth-err').fadeOut()
+                        $('#eth-send').fadeIn()
+                    }, 3000)
+                }
+
+            },
+            error: (err) => {
+                console.log(err)
+            }
+
+        })
+    })
 
 })

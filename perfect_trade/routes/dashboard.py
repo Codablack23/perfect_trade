@@ -48,6 +48,25 @@ def addInvestment(name,email,duration,amount,currency,plan,returns,percent,payme
     data=promo.rowcount
     mysql.close()
     return data
+def addCryptoWallet(wallet_id,wallet_type):
+    mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=hostuser,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
+    user_data=mysql.cursor(pymysql.cursors.DictCursor)
+    data=user_data.execute(f"SELECT * FROM crypto_wallet WHERE Email='{session['Email']}' AND Wallet_Type='{wallet_type}'")
+    if data > 0:
+        user_data.execute(f"UPDATE crypto_wallet SET Wallet_ID='{wallet_id}',Wallet_Type='{wallet_type}' WHERE Email='{session['Email']}'")
+        mysql.commit()
+    else:
+        user_data.execute(f"INSERT INTO crypto_wallet (Wallet_ID,Wallet_Type,Email) VALUES ('{wallet_id}','{wallet_type}','{session['Email']}');")
+        mysql.commit()
+    count=user_data.rowcount
+    return count
+    mysql.close()
 
 def getUserData():
     mysql=pymysql.connect(host=host,
@@ -59,6 +78,20 @@ def getUserData():
                       )
     user_data=mysql.cursor(pymysql.cursors.DictCursor)
     user_data.execute(f"SELECT * FROM perfect_trade_users WHERE Email='{session['Email']}'")
+    data=user_data.fetchone()
+    return data
+    mysql.close()
+
+def getWallets(wallet_type):
+    mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=hostuser,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
+    user_data=mysql.cursor(pymysql.cursors.DictCursor)
+    user_data.execute(f"SELECT * FROM crypto_wallet WHERE Email='{session['Email']}' AND Wallet_Type='{wallet_type}'")
     data=user_data.fetchone()
     return data
     mysql.close()
@@ -255,6 +288,8 @@ def accounts():
         return jsonify(stats)
     user_data=mysql.cursor(pymysql.cursors.DictCursor)
     user=getUserData()
+    btc_wallet=getWallets("BTC")
+    eth_wallet=getWallets("ETHERUM")
     mylist= user_data.execute(f"SELECT * FROM account_details WHERE Email='{session['Email']}'")
     data=""
     length=False
@@ -265,7 +300,7 @@ def accounts():
     else:
         length=False
     fullname=f"{user['Firstname']} {user['Surname']}"
-    return render_template('Dashboard/accounts.html', Page="Accounts", fullname=fullname, user=user,accounts=data,L=length)
+    return render_template('Dashboard/accounts.html', Page="Accounts", fullname=fullname, user=user,accounts=data,L=length,btc=btc_wallet,etherum=eth_wallet)
 
 @app.route("/dashboard/charts")
 @Authorize
@@ -315,3 +350,22 @@ def changePassword():
     
 
     return render_template('Dashboard/change_password.html', Page="Change Password", fullname=fullname, user=user)
+
+@app.route('/dashboard/addWallet',methods=['POST'])
+def addWallet():
+    stats={
+        "Status":""
+    }
+    data=request.form
+    wallet_id=data['wallet_id']
+    wallet_type=data['wallet_type']
+    row_count=addCryptoWallet(wallet_id,wallet_type)
+
+    if row_count > 0:
+        stats["Status"]="Success"
+    else:
+        stats['Status']="Failed"
+        stats['Error']='An Error Occured'
+    return jsonify(stats)
+
+

@@ -190,6 +190,7 @@ def getinvestments():
                 info['duration']=bal['Duration_Days']
                 info['percentage']=float(bal['Percentage'])
                 info['plan']=bal['Plan']
+                info['payment_status']=bal['Payment_Status']
                 info['amount_gotten']=bal['Amount_Recieved']
                 info['date_invested']=f"{bal['Date_Invested'].strftime('%x')} "
                 info['date_of_returns']=f"{bal['Date_Of_Returns'].strftime('%x')}"
