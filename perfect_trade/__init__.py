@@ -45,8 +45,8 @@ charset='utf8mb4'
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = "perfecttrades.com@gmail.com"
-app.config['MAIL_PASSWORD'] = "0772721587"
+app.config['MAIL_USERNAME'] = "perfecttrades.com.ng@gmail.com"
+app.config['MAIL_PASSWORD'] = "perfecttrades@password.com"
 mail = Mail(app)
 
 
