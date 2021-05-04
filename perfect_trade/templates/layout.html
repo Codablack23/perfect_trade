@@ -30,6 +30,23 @@
 <script src="{{url_for('static', filename='js/home.js')}}"></script>
 <script src="{{url_for('static', filename='bootstrap/js/bootstrap.js')}}"></script>
 <script>
+    $(document).ready(() => {
+        $.ajax({
+            url: "/",
+            type: "POST",
+            dataType: "JSON",
+            success: (data) => {
+
+                console.log(data)
+
+            },
+            error: () => {
+                $("#failed").slideDown()
+            }
+
+        })
+
+    })
 </script>
 
 </html>

@@ -1,6 +1,9 @@
 from flask import Flask
 # from flask_mysqldb import MySQL
 from flask_mail import Mail
+from flask_marshmallow import Marshmallow
+from flask_sqlalchemy import SQLAlchemy
+import sqlite3
 import os
 
 # class MysqlConnection(object):
@@ -30,6 +33,11 @@ port=26183
 user="perfect-trades"
 password="perfect_trade"
 db='perfect_trade_db'
+app.config['SQLALCHEMY_DATABASE_URI']="sqlite:///mydb.db"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
+
+database=SQLAlchemy(app)
+ma=Marshmallow(app)
 charset='utf8mb4'
 # cur=pymysql.cursors.DictCursor
 # app.config['MYSQL_HOST']="https://mysql-26183-0.cloudclusters.net"
@@ -49,6 +57,7 @@ app.config['MAIL_USERNAME'] = "perfecttrades.com.ng@gmail.com"
 app.config['MAIL_PASSWORD'] = "perfecttrades@password.com"
 mail = Mail(app)
 
+from .models import Users,messages,account,account_details,Promo,investments,withdrawals,Admin,wallet
 
 from .routes import home
 from .routes import users

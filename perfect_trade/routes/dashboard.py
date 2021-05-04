@@ -82,6 +82,54 @@ def getUserData():
     return data
     mysql.close()
 
+def getRefferals(client_id):
+    mysql=pymysql.connect(host=host,
+                    port=port,
+                    user=hostuser,
+                    password=password,
+                    db=dbs,
+                    charset=charset,
+                    )
+    _id=client_id
+    user_data=mysql.cursor(pymysql.cursors.DictCursor)
+    user_data.execute(f"SELECT * FROM referrals WHERE Client_ID='{_id}'")
+    data=user_data.fetchall()
+    return data
+    mysql.close()
+
+def getRefferalData(customer_ID):
+    mysql=pymysql.connect(host=host,
+                    port=port,
+                    user=hostuser,
+                    password=password,
+                    db=dbs,
+                    charset=charset,
+                    )
+    _id=customer_ID
+    user_data=mysql.cursor(pymysql.cursors.DictCursor)
+    user_data.execute(f"SELECT * FROM referrals WHERE Reffered_Client_ID='{_id}'")
+    data=user_data.fetchone()
+    return data
+    mysql.close()
+    
+def UpdateReff(Client_ID,Customer_ID):
+    mysql=pymysql.connect(host=host,
+                    port=port,
+                    user=hostuser,
+                    password=password,
+                    db=dbs,
+                    charset=charset,
+                    )
+    
+    customer=Customer_ID
+    user_data=mysql.cursor(pymysql.cursors.DictCursor)
+    user_data.execute(f"UPDATE referrals SET Client_Investment_Status = 'Invested' WHERE Client_ID = '{Client_ID}' AND Reffered_Client_ID='{Customer_ID}'")
+    mysql.commit()
+    count=user_data.rowcount
+    return count
+    mysql.close()
+    
+
 def getWallets(wallet_type):
     mysql=pymysql.connect(host=host,
                       port=port,
@@ -106,6 +154,19 @@ def getinvestments():
                       )
     db=mysql.cursor(pymysql.cursors.DictCursor)
     db.execute(f'SELECT * FROM investments WHERE Email="{session["Email"]}"')
+    data=db.fetchall()
+    return data
+
+def getSpecific(name):
+    mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=hostuser,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
+    db=mysql.cursor(pymysql.cursors.DictCursor)
+    db.execute(f'SELECT * FROM investments WHERE Name="{name}"')
     data=db.fetchall()
     return data
 
@@ -185,12 +246,13 @@ def logout():
     return redirect(url_for("LogIn"))
 
 
-# @app.route("/dashboard/referrals")
-# @Authorize
-# def referrals():
-#     user=getUserData()
-#     fullname=f"{user['Firstname']} {user['Surname']}"
-#     return render_template('Dashboard/referrals.html', Page="Referrals", fullname=fullname, user=user)
+@app.route("/dashboard/referrals")
+@Authorize
+def referrals():
+    user=getUserData()
+    fullname=f"{user['Firstname']} {user['Surname']}"
+    reffered_data=getRefferals(user['Customer_ID'])
+    return render_template('Dashboard/referrals.html', Page="Referrals", fullname=fullname, user=user,mydata=reffered_data)
 
 
 @app.route("/dashboard/invest",methods=["GET","POST"])
@@ -217,18 +279,48 @@ def invest():
       }
       percent=data['percent']
       payment_stats="Not Paid"
-      new_investment=addInvestment(fullname,new_email,duration,amount,currency,plan,returns,percent,payment_stats,i_date)
-      if new_investment > 0:
-          status['Success']=True
-          new_msg=Message()
-          new_msg.subject="Starting Investment"
-          new_msg.body=f'{fullname} from Perfect Trade is About To Make an Investment Of {amount} {currency} through the BTC or Etherum Address You will Recieve A Payment Soon'
-          new_msg.recipients=['perfecttrades.com@gmail.com']
-          new_msg.sender=f'{fullname} From Perfect Trade'
-          mail.send(new_msg)  
-      else :
-          status['Success']=False
-          status['error']="An Error Occured"
+      
+
+      if user['Referred'] !='False':
+        app.logger.info('True')
+        reff_data=getRefferalData(user['Customer_ID'])
+        investor_name=user['Firstname']+' '+user['Surname']
+        my_investments=getSpecific(investor_name)
+        if len(my_investments) == 0:
+            count=UpdateReff(reff_data['Client_ID'], user['Customer_ID'])
+            if count > 0:
+                app.logger.info('success')
+                new_investment=addInvestment(fullname,new_email,duration,amount,currency,plan,returns,percent,payment_stats,i_date)
+                if new_investment>0:
+                      status['Success']=True
+                      new_msg=Message()
+                      new_msg.subject="Starting Investment"
+                      new_msg.body=f'{fullname} from Perfect Trade is About To Make an Investment Of {amount} {currency} through the BTC or Etherum Address You will Recieve A Payment Soon'
+                      new_msg.recipients=['perfecttrades.com@gmail.com']
+                      new_msg.sender=f'{fullname} From Perfect Trade'
+                      mail.send(new_msg)  
+                else :
+                    status['Success']=False
+                    status['error']="An Error Occured"
+        else:
+            app.logger.info("NADA")
+
+      else:
+        app.logger.info(user['Referred'])
+        app.logger.info('False')
+        new_investment=addInvestment(fullname,new_email,duration,amount,currency,plan,returns,percent,payment_stats,i_date)
+        if new_investment>0:
+            status['Success']=True
+            new_msg=Message()
+            new_msg.subject="Starting Investment"
+            new_msg.body=f'{fullname} from Perfect Trade is About To Make an Investment Of {amount} {currency} through the BTC or Etherum Address You will Recieve A Payment Soon'
+            new_msg.recipients=['perfecttrades.com@gmail.com']
+            new_msg.sender=f'{fullname} From Perfect Trade'
+            mail.send(new_msg)  
+        else :
+            status['Success']=False
+            status['error']="An Error Occured"
+        
       return jsonify(status)
     return render_template('Dashboard/invest.html', Page="Invest", fullname=fullname, user=user)
 

@@ -14,6 +14,67 @@ import threading
 import pymysql
 import pymysql.cursors
 
+@app.route("/signup/<client_id>", methods=["GET", "POST"])
+def Refer(client_id):
+    form=SignUpForm(request.form)
+    date=datetime.now().year
+    random_number=int(random()*1000000)
+    customer_id=f'salemfx/{date}/{random_number}'
+
+    if request.method=="POST" and form.validate():
+        mysql=pymysql.connect(host=host,
+                      port=port,
+                      user=users,
+                      password=password,
+                      db=dbs,
+                      charset=charset,
+                      )
+        surname=form.surname.data
+        firstname=form.firstName.data
+        email=form.email.data
+        passwords=sha256_crypt.hash(str(form.password.data))
+
+        
+
+        find_query=f"SELECT * FROM perfect_trade_users WHERE Email= '{email}' OR (Surname='{surname}' AND Firstname='{firstname}')"
+        db=mysql.cursor(pymysql.cursors.DictCursor)
+        res= db.execute(find_query)
+        if res >0:
+             db.close()
+             flash("User Already Exist", "red")
+             redirect(url_for('SignUp'))
+        else:
+                details={
+                'surname':surname,
+                'firstname':firstname,
+                'email': email,
+                'password':  passwords
+                }
+                session['details']=details
+                raw_pin=int(random()*1000000)
+                pin=f'{raw_pin:5}'
+                app.logger.info(pin)
+
+                session["pin"]=pin
+                session["client_id"]=client_id
+                msg=Message()
+                msg.subject="Email Verification"
+                msg.body=f"Your Email Verification Pin is {pin} This Pin Will Expire In Five Minutes"
+                msg.recipients=[email]
+                msg.sender="Perfect Trades"
+                try:
+                    mail.send(msg)
+                    return redirect(url_for("confirm_email"))
+    
+                except Exception as error:
+                    flash("Sorry It Seems an Error Occured", "red")
+                    redirect(url_for("SignUp"))
+                     
+               
+     
+
+    return render_template('User/sign_up.html', Page="Sign Up", form=form)
+
 @app.route("/signup", methods=["GET", "POST"])
 def SignUp():
     form=SignUpForm(request.form)
@@ -50,6 +111,7 @@ def SignUp():
                 'email': email,
                 'password':  passwords
                 }
+                app.logger.info(form.password.data)
                 session['details']=details
                 raw_pin=int(random()*1000000)
                 pin=f'{raw_pin:5}'
@@ -189,20 +251,35 @@ def confirm_email():
         surname=details['surname']    
         email=details['email']
         passwords=sha256_crypt.encrypt(details['password'])
-        customer_id=f'salemfx/{firstname}{surname}/{user_pin}'
+        customer_id=f'salemfx.{firstname}{surname}.{user_pin}'
+        Reffered='False'
+        if 'client_id' in session:
+            Reffered='True'
 
-        add_query=f'INSERT INTO perfect_trade_users(Firstname, Surname, Email, Password, Customer_ID) VALUES("{firstname}","{surname}","{email}","{passwords}","{customer_id}")'     
+       
+            
+        add_query=f'INSERT INTO perfect_trade_users(Firstname, Surname, Email, Password, Customer_ID,Referred) VALUES("{firstname}","{surname}","{email}","{passwords}","{customer_id}","{Reffered}")'     
         add_query2=f'INSERT INTO account(Name, Email, Balance,Currency) VALUES("{firstname+surname}","{email}","{0.00}","USD")'    
         if user_pin == session['pin']:
              db.execute(add_query)
              db.execute(add_query2)
              mysql.commit()
              count=db.rowcount
-             mysql.close()
+             
             #  flash("You Have Registered Sucessfully You can Now Login ", "green")
              if count > 0:
+                if 'client_id' in session:
+                    client_id=session['client_id']
+                    Reffered_Client=f'{firstname} {surname}'
+                    Reffered_Client_ID=customer_id
+                    percent=10
+                    i_status='Pending'
+                    db.execute(f'INSERT INTO referrals(Client_ID,Reffered_Client,Client_Investment_Status,Percentage,Reffered_Client_ID) VALUES("{client_id}","{Reffered_Client}","{i_status}","{percent}","{Reffered_Client_ID}")')
+                    mysql.commit()
+                    count=db.rowcount
                 del(session['details'])
                 del(session['pin'])
+                del(session['client_id'])
                 response['status']="success"
              else:
                 response['status']="success"

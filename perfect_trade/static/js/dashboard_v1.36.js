@@ -389,19 +389,19 @@ $(document).ready(() => {
             $('#confirm_logout').slideUp()
         }),
 
-        //     $('#reff').ready(() => {
-        //         const val = document.querySelector('#copied-text').value
-        //         link_value = `${location.origin}/signup/${val}`
-        //         document.querySelector('#copied-text').value = link_value
-        //     })
-        // $('#copy-button').click(() => {
-        //         console.log(location)
-        //         let copied_text = document.querySelector('#copied-text')
-        //         copied_text.select()
-        //         document.execCommand('copy')
-        //         $("#link_copied").fadeIn().fadeOut(4000)
+        $('#reff').ready(() => {
+            const val = document.querySelector('#copied-text').value
+            link_value = `${location.origin}/signup/${val}`
+            document.querySelector('#copied-text').value = link_value
+        })
+    $('#copy-button').click(() => {
+            console.log(location)
+            let copied_text = document.querySelector('#copied-text')
+            copied_text.select()
+            document.execCommand('copy')
+            $("#link_copied").fadeIn().fadeOut(4000)
 
-        //     }),
+        }),
         $('#withdraw_form').submit(sendWithdraws),
         $('#refresh-balance').click(loadbalance)
     $('#refresh-table').click(loadRequestedWithdraws)

@@ -19,17 +19,20 @@
                 <thead>
                     <tr class="w3-light-grey w3-text-red">
                         <th>Referred</th>
-                        <th>Date</th>
                         <th>Percentage</th>
-
+                        <th>Investment Status</th>
                     </tr>
                 </thead>
+                {% if mydata %}{% for reff in mydata %}
                 <tr>
-                    <td>Referred 1</td>
-                    <td>22-01-21</td>
-                    <td>4%</td>
+                    <td>{{reff['Reffered_Client']}}</td>
+                    <td>{{reff['Percentage']}}%</td>
+                    <td>{{reff['Client_Investment_Status']}}</td>
                 </tr>
-                <tr>
+
+                {% endfor %}{% endif %}
+
+                <!-- <tr>
                     <td>Referred 2</td>
                     <td>15-01-21</td>
                     <td>4%</td>
@@ -38,7 +41,7 @@
                     <td>Referred #</td>
                     <td>05-01-21</td>
                     <td>4%</td>
-                </tr>
+                </tr> -->
 
             </table>
         </div>
