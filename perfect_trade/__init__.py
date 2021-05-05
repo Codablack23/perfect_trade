@@ -28,9 +28,9 @@ import os
 
 app = Flask(__name__)
 app.secret_key="b'bV/\x1d\xc1\xf9\x96i\x15\xaa\xe9\x85A\xb0+Y\x11&\x111cz?+'"
-host="mysql-26183-0.cloudclusters.net"
-port=26183
-user="perfect-trades"
+host="mysql-30241-0.cloudclusters.net"
+port=30241
+user="perfect_trade"
 password="perfect_trade"
 db='perfect_trade_db'
 app.config['SQLALCHEMY_DATABASE_URI']="sqlite:///mydb.db"
