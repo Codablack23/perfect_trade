@@ -32,7 +32,7 @@ host="mysql-30241-0.cloudclusters.net"
 port=30241
 user="perfect_trade"
 password="perfect_trade"
-db='perfect_trade_db'
+db='perfect_trade'
 app.config['SQLALCHEMY_DATABASE_URI']="sqlite:///mydb.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 
