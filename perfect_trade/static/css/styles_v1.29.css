@@ -45,7 +45,6 @@ body {
     background-size: cover;
     opacity: 0.9; */
     min-height: 100vh;
-    border-radius: 0px 0px 30px 30px;
 }
 
 .welcome-text {
@@ -110,10 +109,16 @@ vr {
 
 .contact-inputs {
     width: 90%;
-    border-radius: 7px;
     outline: none;
     padding: 1%;
     opacity: 0.8;
+    background: transparent;
+}
+
+.uk-input:focus,
+.uk-textarea:focus {
+    background: transparent;
+    outline-color: red;
 }
 
 textarea {

@@ -12,9 +12,9 @@ import pymysql
 @app.route("/",methods=["GET","POST"])
 def Landing():
     if request.method == "POST":
-        user1= Users('Edih', 'Goodluck', 'goodluckedih@gmail.com', 'my_password', 'my_id')
-        database.session.add(user1)
-        database.session.commit()
+        # user1= Users('Edih', 'Goodluck', 'goodluckedih@gmail.com', 'my_password', 'my_id')
+        # database.session.add(user1)
+        # database.session.commit()
 
         database_data=Users.query.all()
         return new_users.jsonify(database_data)

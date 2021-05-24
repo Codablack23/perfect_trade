@@ -1,22 +1,28 @@
 <div style="border-radius:0px 0px 50px 50px;">
-    <div class=" w3-center pt-2" style="border-radius:10px;">
+    <div class="w3-center pt-2" style="border-radius:10px;">
+
         <div class="">
-            <div class="d-md-flex justify-content-md-end justify-content-center">
-                <div class="d-flex justify-content-center ">
+            <div class="d-md-flex justify-content-md-end d-sm-none d-none d-md-block">
+
+                <div class="d-flex justify-content-md-center justify-content-end">
 
                     <div class="w3-padding w3-border-right w3-text-light-grey w3-border-grey">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-telegram" viewBox="0 0 16 16">
                             <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.287 5.906c-.778.324-2.334.994-4.666 2.01-.378.15-.577.298-.595.442-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294.26.006.549-.1.868-.32 2.179-1.471 3.304-2.214 3.374-2.23.05-.012.12-.026.166.016.047.041.042.12.037.141-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8.154 8.154 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629.093.06.183.125.27.187.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.426 1.426 0 0 0-.013-.315.337.337 0 0 0-.114-.217.526.526 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09z"/>
                           </svg>
-                        <h6 class="w3-text-red">https://t.me/Salemite00</h6>
-                        <h6>Message For support</h6>
+                        <div class="d-sm-none d-none d-md-block">
+                            <h6 class="w3-text-red">https://t.me/Salemite00</h6>
+                            <h6 class="w3-text-red">Message For support</h6>
+                        </div>
                     </div>
                     <div class="w3-padding">
                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-google w3-text-light-grey" viewBox="0 0 16 16">
                             <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z"/>
                           </svg>
-                        <h6 class="w3-text-red">Perfecttrades.com@gmail.com</h6>
-                        <h6>Email Us</h6>
+                        <div class="d-sm-none d-none d-md-block">
+                            <h6 class="w3-text-red">Perfecttrades.com@gmail.com</h6>
+                            <h6>Email Us</h6>
+                        </div>
                     </div>
                 </div>
 
@@ -24,15 +30,20 @@
             </div>
         </div>
     </div>
-    <nav class="navbar navbar-expand-md navigation sticky-top" style="border-radius: 40px;">
+    <nav class="navbar navbar-expand-md navigation sticky-top" style="border-radius: 40px;z-index:100;">
         <!-- Brand -->
-        <a class="navbar-brand w3-xlarge salem-font" href="#">
-            <h1 class="w3-text-green salem-font" style="font-size: 60px;">Salem Fx</h1>
+
+
+
+        <a class="w3-xlarge salem-font" href="#" style="z-index:100;">
+            <h1 class="w3-text-green salem-font" style="font-size: 60px;z-index:100;">Salem Fx</h1>
         </a>
 
         <!-- Toggler/collapsibe Button -->
-        <button class="navbar-toggler glyphicon glyphicon-chevron-down w3-text-white" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-        <span class="navbar-toggler-icon"></span>
+        <button class="navbar-toggler w3-text-white" type="button" data-toggle="collapse">
+          <a href="#offcanvas-slide" class="w3-text-green ml-3" uk-toggle>
+              <span uk-navbar-toggle-icon></span>
+          </a>
        </button>
 
         <!-- Navbar links -->
@@ -42,7 +53,10 @@
                     <a class="nav-link w3-text-light-grey" href="#about">About</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link w3-text-light-grey" href="#guarantees">Services</a>
+                    <a class="nav-link w3-text-light-grey" href="#services">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link w3-text-light-grey" href="#guarantees">Guarantees</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link w3-text-light-grey" href="#plans">Plans</a>

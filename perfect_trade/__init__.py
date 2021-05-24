@@ -64,3 +64,4 @@ from .routes import users
 from .routes import dashboard
 from .routes import dashboard_api
 from .routes import admin
+from .routes import training

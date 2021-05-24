@@ -18,6 +18,10 @@ $(document).ready(() => {
 
         })
     })
+    $('#read_more').click(() => {
+        $('#visible').slideToggle()
+        $('#invisible').slideToggle()
+    })
 })
 const form_errors = {
     email: "",

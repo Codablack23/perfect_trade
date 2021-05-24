@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="{{url_for('static', filename='css/glyphicon.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='/css/uikit.min.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='css/w3.css')}}">
-    <link rel="stylesheet" href="{{url_for('static', filename='/bootstrap/css/bootstrap.css')}}">
-    <link rel="stylesheet" href="{{url_for('static', filename='css/styles_v1.29.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/training_v1.01.css')}}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <!-- <link rel="manifest" href="https://w.mytrlk.com/index.php?id_promo=5059713_1&promokeys=624ce41316a167db23279ef652c01636&aff_sourceid=&clickid="> -->
     <script src="{{url_for('static', filename='/js/uikit.js')}}"></script>
     <script src="{{url_for('static', filename='/js/uikit.min.js')}}"></script>
@@ -22,33 +22,11 @@
     </style>
 </head>
 
-<body>
+<body class="uk-container">
 
     {% block content%} {% endblock%}
 </body>
-<script src="{{url_for('static', filename='js/jquery.js')}}"></script>
-<script src="{{url_for('static', filename='js/home_v1.01.js')}}"></script>
-<script src="{{url_for('static', filename='bootstrap/js/bootstrap.js')}}"></script>
-<script>
-    $(document).ready(() => {
-        $.ajax({
-            url: "/",
-            type: "POST",
-            dataType: "JSON",
-            success: (data) => {
-
-                console.log(data)
-
-            },
-            error: () => {
-                $("#failed").slideDown()
-            }
-
-        })
-
-
-
-    })
-</script>
-
-</html>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="{{url_for('static', filename='js/training_v1.01.js')}}"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="{{url_for('static', filename='/js/uikit-icons.min.js')}}"></script>
