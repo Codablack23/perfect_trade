@@ -8,10 +8,10 @@ import os
 
 # class MysqlConnection(object):
 #     def __init__(self):
-#         self.host ="mysql-26183-0.cloudclusters.net"
-#         self.port = 26183
-#         self.user = 'perfect_trades'
-#         self.passwd = 'perfect-trade'
+#         self.host ="mysql-34058-0.cloudclusters.net"
+#         self.port =34058
+#         self.user = 'perfect_trade'
+#         self.passwd = 'perfect_trade'
 #         self.db = 'perfect_trade_db'
 
 #     def connect_mysql(self):
@@ -28,8 +28,8 @@ import os
 
 app = Flask(__name__)
 app.secret_key="b'bV/\x1d\xc1\xf9\x96i\x15\xaa\xe9\x85A\xb0+Y\x11&\x111cz?+'"
-host="mysql-30241-0.cloudclusters.net"
-port=30241
+host="mysql-34058-0.cloudclusters.net"
+port=34058
 user="perfect_trade"
 password="perfect_trade"
 db='perfect_trade'
