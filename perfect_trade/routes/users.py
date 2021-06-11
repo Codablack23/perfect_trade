@@ -67,7 +67,7 @@ def Refer(client_id):
                     return redirect(url_for("confirm_email"))
     
                 except Exception as error:
-                    flash("Sorry It Seems an Error Occured", "red")
+                    flash("Sorry An Error Occured Confirmationn Email Could Not Be Sent", "red")
                     redirect(url_for("SignUp"))
                      
                
