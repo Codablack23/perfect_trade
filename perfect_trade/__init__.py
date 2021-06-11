@@ -53,8 +53,8 @@ charset='utf8mb4'
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = False
-app.config['MAIL_USERNAME'] = "perfecttrades.com.ng@gmail.com"
-app.config['MAIL_PASSWORD'] = "perfecttrades@password.com"
+app.config['MAIL_USERNAME'] = "Support.Team.PerfectTrades@gmail.com"
+app.config['MAIL_PASSWORD'] = "p@password.com"
 mail = Mail(app)
 
 from .models import Users,messages,account,account_details,Promo,investments,withdrawals,Admin,wallet
