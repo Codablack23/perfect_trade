@@ -8,10 +8,10 @@ import os
 
 # class MysqlConnection(object):
 #     def __init__(self):
-#         self.host ="mysql-26183-0.cloudclusters.net"
-#         self.port = 26183
-#         self.user = 'perfect_trades'
-#         self.passwd = 'perfect-trade'
+#         self.host ="mysql-34058-0.cloudclusters.net"
+#         self.port =34058
+#         self.user = 'perfect_trade'
+#         self.passwd = 'perfect_trade'
 #         self.db = 'perfect_trade_db'
 
 #     def connect_mysql(self):
@@ -52,9 +52,9 @@ charset='utf8mb4'
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
-app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = "perfecttrades.com.ng@gmail.com"
-app.config['MAIL_PASSWORD'] = "perfecttrades@password.com"
+app.config['MAIL_USE_SSL'] = False
+app.config['MAIL_USERNAME'] = "support.team.perfecttrades@gmail.com"
+app.config['MAIL_PASSWORD'] = "p@password.com"
 mail = Mail(app)
 
 from .models import Users,messages,account,account_details,Promo,investments,withdrawals,Admin,wallet
