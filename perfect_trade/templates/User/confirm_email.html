@@ -1,47 +1,35 @@
 {% extends 'User/user_layout.html' %} {% block user %}
+
 <div class="login-container">
     {% include 'User/components/navigation.html' %}
-    <div class="container form">
-        <div class="">
-            <header class="status ">
-                <div class=" w3-animate-opacity w3-center w3-pale-green w3-text-white p-3 w3-container" style="display:none" id="success">
-                    <h6 class="w3-text-green" id="status-text">You Have Successfully Registered You Can Now Login</h6>
-                    <a href="/login"><button class="w3-button w3-pale-green w3-border w3-border-green w3-hover-pale-green w3-hover-text-green">Login</button></a><br>
-                </div>
-                <div class=" w3-animate-opacity w3-center w3-pale-red w3-text-white p-3 w3-container" style="display:none" id="failed">
-                    <h6 class="w3-text-red" id="status-text">Your Pin Do Not Match</h6>
-                </div>
-                <div class=" w3-animate-opacity w3-center w3-pale-red w3-text-white p-3 w3-container" style="display:none" id="loading">
-                    <h6 class="w3-text-red" id="status-text"></h6>
-                </div>
-                <div class=" w3-animate-opacity w3-center w3-pale-red w3-text-white p-3 w3-container" style="display:none" id="session_cleared">
-                    <h6 class="w3-text-red" id="status-text">Sorry It seems Your Pin Has expired </h6>
-                </div>
+    <button id="o_btn" class="btn d-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">Toggle top offcanvas</button>
 
-            </header>
-            <header class="w3-center mt-2">
-                <div class="w3-text-green">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" fill="currentColor" class="bi bi-shield-exclamation" viewBox="0 0 16 16">
-                        <path d="M5.338 1.59a61.44 61.44 0 0 0-2.837.856.481.481 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.725 10.725 0 0 0 2.287 2.233c.346.244.652.42.893.533.12.057.218.095.293.118a.55.55 0 0 0 .101.025.615.615 0 0 0 .1-.025c.076-.023.174-.061.294-.118.24-.113.547-.29.893-.533a10.726 10.726 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.775 11.775 0 0 1-2.517 2.453 7.159 7.159 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7.158 7.158 0 0 1-1.048-.625 11.777 11.777 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 62.456 62.456 0 0 1 5.072.56z"/>
-                        <path d="M7.001 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.553.553 0 0 1-1.1 0L7.1 4.995z"/>
-                      </svg>
-                </div><br>
-                <h3 class="w3-text-green">Confirm Email</h3>
-                <p class="w3-text-white w3-small w3-margin">Hello there! Enter The Pin sent To Your Email To Complete Registeration </p>
+    <div class="offcanvas offcanvas-bottom bg-dark" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel" style="border-radius: 25px 25px 0px 0px;">
+        <div class="offcanvas-header">
+            <h5 id="offcanvasTopLabel">
 
-            </header>
-            <form method="POST" action="" class="container w3-padding w3-center w3-text-grey" id="confirm_sign">
-                <input type="number" name="pin" id="pin" class="fp-inputs password mb-2 w3-border w3-border-light-gray" required placeholder="Enter Pin"><br>
-                <br>
-                <button class="w3-button w3-green fp-submit-btn w3-hover-white w3-hover-text-green" type="submit" id="confirm-pin">Confirm Pin</button><br>
-                <a href="/login" class="w3-text-green">Back To Login</a>
-            </form>
+            </h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body w3-left">
+
+            <div class="d-sm-flex w-100">
+                <div class="ml-5" id="status_logo" style="width: 5%;"></div>
+                <div class="w-75 w3-left ml-4" id="alert_content">
+                    <h4><span style="text-transform: uppercase;" id="mystatus"></span></h4>
+                    <h5 class="w3-text-grey" id="mymessage"></h5>
+                </div>
+            </div>
+
+
+
         </div>
     </div>
+    <div id="inject" class="w3-center" style="width:65%;margin:10% auto;">
 
-</div>
-{% include "User/components/script.html" %}
-<script>
+    </div>
+    {% include "User/components/script.html" %}
+    <!-- <script>
     const minute = Math.floor(1000 * 60 * 5)
     const date = new Date()
     console.log(date.getMinutes)
@@ -60,5 +48,108 @@
             })
         })
     }, minute)
-</script>
-{% endblock %}
+</script> -->
+
+    <script>
+        const overlay = document.querySelector('#overlay')
+        const loading = `
+                <div class="w3-white w3-card w-100" id="overlay" style="padding:8%;border-radius:12px;">
+                <div class="d-flex justify-content-center">
+                <div class="spinner-grow text-success m-1" role="status">
+                <span class="sr-only">Loading...</span>
+                </div>
+                <div class="spinner-grow text-success m-1" role="status">
+                <span class="sr-only">Loading...</span>
+                </div>
+                <div class="spinner-grow text-success m-1" role="status">
+                <span class="sr-only">Loading...</span>
+                </div>
+                <div class="spinner-grow text-success m-1" role="status">
+                <span class="sr-only">Loading...</span>
+                </div>
+                </div><br/>
+
+                <h4 class="w3-text-green">Loading</h4>
+                </div>
+        `
+        const success_icon = `
+         <div class="w3-text-green">
+             <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor" class="bi bi-shield-fill-check" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M8 0c-.69 0-1.843.265-2.928.56-1.11.3-2.229.655-2.887.87a1.54 1.54 0 0 0-1.044 1.262c-.596 4.477.787 7.795 2.465 9.99a11.777 11.777 0 0 0 2.517 2.453c.386.273.744.482 1.048.625.28.132.581.24.829.24s.548-.108.829-.24a7.159 7.159 0 0 0 1.048-.625 11.775 11.775 0 0 0 2.517-2.453c1.678-2.195 3.061-5.513 2.465-9.99a1.541 1.541 0 0 0-1.044-1.263 62.467 62.467 0 0 0-2.887-.87C9.843.266 8.69 0 8 0zm2.146 5.146a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647z"/>
+            </svg>
+         </div>
+        `;
+        const failed_icon = `
+         <div class="w3-text-red">
+            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor" class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+            </svg>   
+         </div>
+        `;
+
+        function checkApi(message, status, color) {
+
+            document.querySelector('#mystatus').style.color = color
+            document.querySelector('#mymessage').style.color = color
+            document.querySelector('#status_logo').innerHTML = success_icon
+            document.querySelector('#mystatus').innerHTML = "Email Verification Successfull"
+            document.querySelector('#mymessage').innerHTML = "Your Email Has Been Verified and Your Account Has Been Created You Can Now Log In To Your Dashboard"
+
+            return `
+               <div class="w3-white" style="padding:5%;border-radius:15px">
+                <div class = "w3-text-grey" >
+                <header>
+                </header>
+                <h3>Go Back To Login</h3>
+                <a href="/login"><button class="w3-button w3-green w3-text-white submit-btn w3-hover-white w3-text-green w3-hover-text-green w3-text-green">Log in</button></a>
+                </div >
+                </div>
+            `
+        }
+        const failed = (message, status, color) => {
+            document.querySelector('#mystatus').style.color = color
+            document.querySelector('#mymessage').style.color = color
+            document.querySelector('#mystatus').innerHTML = status
+            document.querySelector('#status_logo').innerHTML = failed_icon
+            document.querySelector('#mymessage').innerHTML = message
+
+            return `
+               <div class="w3-white" style="padding:5%;border-radius:15px">
+                <div class = "w3-text-grey" >
+                <header>
+                </header>
+                <h3>Go Back To Sign Up</h3>
+                <a href="/signup"><button class="w3-button w3-green w3-text-white submit-btn w3-hover-white w3-text-green w3-hover-text-green w3-text-green">Signup</button></a>
+                </div >
+                </div>
+            `
+        }
+        const injected = document.querySelector('#inject')
+        $(document).ready(() => {
+            injected.innerHTML = loading
+            $.ajax({
+                url: "/api/confirm_email/{{e_token}}",
+                type: "POST",
+                beforeSend: () => {
+                    $('#overlay').show()
+                    injected.innerHTML = loading
+                },
+                success: (result) => {
+                    const mydata = result
+                    $('#o_btn').click()
+                    $('#overlay').fadeOut()
+                    if (mydata.status == 'success') {
+                        fetch('/clearsession', {
+                            method: "POST"
+                        }).then(data => {}).catch(err => {
+                            console.log(err)
+                        })
+                        injected.innerHTML = checkApi(result.message, result.status, 'green')
+                    } else {
+                        injected.innerHTML = failed(mydata.message, mydata.title, "red")
+                    }
+                }
+            })
+        })
+    </script>
+    {% endblock %}

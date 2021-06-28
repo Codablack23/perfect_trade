@@ -1,7 +1,9 @@
-from flask import Flask, render_template,redirect,logging,flash,url_for,session,request
+from flask import Flask, render_template,redirect,logging,flash,url_for,session,request,json
+import flask
 from perfect_trade import host,db as dbs,password,port,user as users,charset
 from perfect_trade import mail
 from flask_mail import Message
+from itsdangerous import Serializer,URLSafeSerializer,TimestampSigner,TimedSerializer,BadTimeSignature,URLSafeTimedSerializer,SignatureExpired
 from perfect_trade import app
 from wtforms import Form,StringField,PasswordField,TextAreaField,validators
 from passlib.hash import sha256_crypt
@@ -13,6 +15,18 @@ import json
 import threading
 import pymysql
 import pymysql.cursors
+
+serializer= URLSafeTimedSerializer(app.secret_key)
+def returnEmail(link,token):
+    email_template=f"""
+    <div style="text-align:center;font-family:sans-serif;">
+       <h1 style="text-align:center;">VERIFY EMAIL</h3>
+       <h3 style="color:grey;">Click On the Button To Confirm Your Email<h3>
+       <h5>This Link will Expire in 6 Hours. Please Note If You do Confirm Your Email After 6 Hours You Will Have To Register Again </h5>
+      <a href={link} style="text-decoration:none;"><button style="border:none;padding:15px;color:white;border-radius:15px;background:green;">Confirm</button></a>
+    </div>
+    """
+    return email_template
 
 @app.route("/signup/<client_id>", methods=["GET", "POST"])
 def Refer(client_id):
@@ -54,12 +68,13 @@ def Refer(client_id):
                 raw_pin=int(random()*1000000)
                 pin=f'{raw_pin:5}'
                 app.logger.info(pin)
-
-                session["pin"]=pin
+                token=serializer.dumps(email,salt='verify')
+                session["pin"]=token
                 session["client_id"]=client_id
                 msg=Message()
                 msg.subject="Email Verification"
-                msg.body=f"Your Email Verification Pin is {pin} This Pin Will Expire In Five Minutes"
+                link =url_for("confirm_email",email_token=token, _external=True)
+                msg.html=returnEmail(link,token)
                 msg.recipients=[email]
                 msg.sender="Perfect Trades"
                 try:
@@ -90,10 +105,10 @@ def SignUp():
                       db=dbs,
                       charset=charset,
                       )
-        surname=form.surname.data
-        firstname=form.firstName.data
-        email=form.email.data
-        passwords=sha256_crypt.hash(str(form.password.data))
+        surname=request.form['surname']
+        firstname=request.form["firstName"]
+        email=request.form["email"]
+        passwords=sha256_crypt.hash(str(request.form["password"]))
 
         
 
@@ -111,25 +126,30 @@ def SignUp():
                 'email': email,
                 'password':  passwords
                 }
+                token=serializer.dumps(email,salt='verify')
                 app.logger.info(form.password.data)
                 session['details']=details
                 raw_pin=int(random()*1000000)
                 pin=f'{raw_pin:5}'
                 app.logger.info(pin)
 
-                session["pin"]=pin
+                session["pin"]=token
                 msg=Message()
                 msg.subject="Email Verification"
-                msg.body=f"Your Email Verification Pin is {pin} This Pin Will Expire In Five Minutes"
+               
+                link =url_for("confirm_email",email_token=token, _external=True)
+
+                msg.html=returnEmail(link,token)
                 msg.recipients=[email]
                 msg.sender="Perfect Trades"
                 try:
                     mail.send(msg)
-                    return redirect(url_for("confirm_email"))
+                    flash("Confirm Your Email With The Link sent To You", "green")
     
                 except Exception as error:
                     flash("Sorry It Seems an Error Occured", "red")
                     redirect(url_for("SignUp"))
+        
                      
                
      
@@ -155,7 +175,7 @@ def LogIn():
             data=db.fetchone()
             db_password=data['Password']
             app.logger.info(data['Password'])
-            app.logger.info(sha256_crypt.hash(recieved_password))
+            app.logger.info(recieved_password)
             if sha256_crypt.verify(recieved_password,db_password):
                 session['logged_in']=True
                 session['Email']=email
@@ -218,56 +238,76 @@ def clearSession():
        del(session['pin'])
        del(session['details'])
        status={
-           "message":"Session Cleared"
-       }
-       return json.dumps(status)
-
+           "status":200,
+           "message":'Confirmation Session Cleared'
+           }
+       print(status)
+       return flask.jsonify(status)
 
 def clear():
      del(session['pin'])
      del(session['details'])
+  
 
-@app.route("/confirm_email", methods=["GET", "POST"])
+
+
+@app.route("/api/confirm_email/<mytoken>", methods=["GET", "POST"])
 @AuthorizeSignUp
-def confirm_email():
-      response={
-         "status":""
-      }
-      if request.method=="POST":
-        mysql=pymysql.connect(host=host,
-                      port=port,
-                      user=users,
-                      password=password,
-                      db=dbs,
-                      charset=charset,
-                      )
-        db=mysql.cursor(pymysql.cursors.DictCursor)
-        info=dict(request.form)
-        user_pin=info['pin']
-
-        details=session['details']
-
-        firstname=details['firstname']   
-        surname=details['surname']    
-        email=details['email']
-        passwords=sha256_crypt.encrypt(details['password'])
-        customer_id=f'salemfx.{firstname}{surname}.{user_pin}'
-        Reffered='False'
-        if 'client_id' in session:
-            Reffered='True'
+def confirm_email_api(mytoken):
+    random_number=int(random()*1000000)
+    if request.method=="POST":
+        # return flask.jsonify({"Hello":"user"})
+           Json_response={
+           "status":""
+           }
+           try:
+            token=serializer.loads(mytoken,salt='verify',max_age=21600)
+            print(token)
+            print(SignatureExpired)
+           except SignatureExpired:
+          
+            Json_response['status']="expired"
+            Json_response["title"]="Expired Verification"
+            Json_response['message']="Your Verification Time Has Expired Please Go Back To The Sign Up Page and Re-register"
+            clear()
+            #  redirect(url_for('confirm_email'))
+        
 
        
+           mysql=pymysql.connect(host=host,
+                        port=port,
+                        user=users,
+                        password=password,
+                        db=dbs,
+                        charset=charset,
+                        )
+           db=mysql.cursor(pymysql.cursors.DictCursor)
+        #    info=dict(request.form)
+        #    user_pin=info['pin']
+
+           details=session['details']
+
+           firstname=details['firstname']   
+           surname=details['surname']    
+           email=details['email']
+           passwords=details['password']
+           customer_id=f'salemfx.{firstname}{surname}.{random_number}'
+           Reffered='False'
+           if 'client_id' in session:
+            Reffered='True'
+
+        
             
-        add_query=f'INSERT INTO perfect_trade_users(Firstname, Surname, Email, Password, Customer_ID,Referred) VALUES("{firstname}","{surname}","{email}","{passwords}","{customer_id}","{Reffered}")'     
-        add_query2=f'INSERT INTO account(Name, Email, Balance,Currency) VALUES("{firstname+surname}","{email}","{0.00}","USD")'    
-        if user_pin == session['pin']:
-             db.execute(add_query)
-             db.execute(add_query2)
-             mysql.commit()
-             count=db.rowcount
-             
-            #  flash("You Have Registered Sucessfully You can Now Login ", "green")
-             if count > 0:
+           add_query=f'INSERT INTO perfect_trade_users(Firstname, Surname, Email, Password, Customer_ID,Referred) VALUES("{firstname}","{surname}","{email}","{passwords}","{customer_id}","{Reffered}")'     
+           add_query2=f'INSERT INTO account(Name, Email, Balance,Currency) VALUES("{firstname+surname}","{email}","{0.00}","USD")'    
+           if mytoken == session['pin']:
+            db.execute(add_query)
+            db.execute(add_query2)
+            mysql.commit()
+            count=db.rowcount
+            
+        #  flash("You Have Registered Sucessfully You can Now Login ", "green")
+            if count > 0:
                 if 'client_id' in session:
                     client_id=session['client_id']
                     Reffered_Client=f'{firstname} {surname}'
@@ -277,25 +317,30 @@ def confirm_email():
                     db.execute(f'INSERT INTO referrals(Client_ID,Reffered_Client,Client_Investment_Status,Percentage,Reffered_Client_ID) VALUES("{client_id}","{Reffered_Client}","{i_status}","{percent}","{Reffered_Client_ID}")')
                     mysql.commit()
                     count=db.rowcount
-                del(session['details'])
-                del(session['pin'])
-                del(session['client_id'])
-                response['status']="success"
-             else:
-                response['status']="success"
-             return json.dumps(response)
-        
-        
+                    del(session['details'])
+                    del(session['pin'])
+                    del(session['client_id'])
+                    Json_response['status']="success"
+                else:
+                    Json_response['status']="success"
+            else:      
+                Json_response['status']="Failed"
+                Json_response["title"]="Server or Network Error"
+                Json_response['message']="An Error Occurred When Adding account Try Again Later"
+                print(Json_response)
+            return flask.jsonify(Json_response)
+          
+    return flask.jsonify(Json_response)      
+          
 
-        else:
-            #  flash("Your Pin Do Not Match ", "red")
-             response['status']="failed"
-            #  redirect(url_for('confirm_email'))
-             return json.dumps(response) 
 
-    #   timer=threading.Timer(int(60*5),clear())
-    #   timer.start()
-      return render_template('User/confirm_email.html',Page="Confirm Email")
+@app.route("/confirm_email/<email_token>", methods=["GET", "POST"])
+@AuthorizeSignUp
+def confirm_email(email_token):
+    random_number=int(random()*1000000)
+
+    return render_template('User/confirm_email.html',Page="Confirm Email",e_token=email_token)
+
 
 
 @app.route("/rlogin", methods=['GET', 'POST'])
