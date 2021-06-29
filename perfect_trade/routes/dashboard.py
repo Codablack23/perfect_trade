@@ -35,7 +35,7 @@ def addInvestment(name,email,duration,amount,currency,plan,returns,percent,payme
     end_month=datetime.now().month + month_index
     end_year=datetime.now().year
     if end_month > 12:
-        endmonth -=12
+        end_month -=12
         end_year +=1
     if end_day > 30:
         end_day-=30

@@ -147,6 +147,11 @@
                         injected.innerHTML = checkApi(result.message, result.status, 'green')
                     } else {
                         injected.innerHTML = failed(mydata.message, mydata.title, "red")
+                        fetch('/clearsession', {
+                            method: "POST"
+                        }).then(data => {}).catch(err => {
+                            console.log(err)
+                        })
                     }
                 }
             })

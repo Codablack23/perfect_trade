@@ -268,10 +268,7 @@ def confirm_email_api(mytoken):
           
             Json_response['status']="expired"
             Json_response["title"]="Expired Verification"
-            Json_response['message']="Your Verification Time Has Expired Please Go Back To The Sign Up Page and Re-register"
-            clear()
-            #  redirect(url_for('confirm_email'))
-        
+            Json_response['message']="Your Verification Time Has Expired Please Go Back To The Sign Up Page and Re-register"        
 
        
            mysql=pymysql.connect(host=host,
