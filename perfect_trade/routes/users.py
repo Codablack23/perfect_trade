@@ -233,84 +233,39 @@ def confirm_email_api(mytoken):
     random_number=int(random()*1000000)
     if request.method=="POST":
         # return flask.jsonify({"Hello":"user"})
-           Json_response={
+            response={
            "status":""
            }
-           try:
-            token=serializer.loads(mytoken,salt='verify',max_age=21600)
-            print(token)
-            print(SignatureExpired)
-           except SignatureExpired:
-          
-            Json_response['status']="expired"
-            Json_response["title"]="Expired Verification"
-            Json_response['message']="Your Verification Time Has Expired Please Go Back To The Sign Up Page and Re-register"        
+         
 
        
-           mysql=pymysql.connect(host=host,
+            mysql=pymysql.connect(host=host,
                         port=port,
                         user=users,
                         password=password,
                         db=dbs,
                         charset=charset,
                         )
-           db=mysql.cursor(pymysql.cursors.DictCursor)
-        #    info=dict(request.form)
-        #    user_pin=info['pin']
+            db=mysql.cursor(pymysql.cursors.DictCursor)
+            info=dict(request.form)
+            user_pin=info['pin']
+ 
+            details=session['details']
 
-           details=session['details']
-
-           firstname=details['firstname']   
-           surname=details['surname']    
-           email=details['email']
-           passwords=details['password']
-           customer_id=f'salemfx.{firstname}{surname}.{random_number}'
-           Reffered='False'
-           if 'client_id' in session:
-=======
-=======
->>>>>>> parent of 6e80bdd (updated confirmation Pin to confirmation Pin)
-=======
->>>>>>> parent of 6e80bdd (updated confirmation Pin to confirmation Pin)
-def confirm_email():
-      response={
-         "status":""
-      }
-      if request.method=="POST":
-        mysql=pymysql.connect(host=host,
-                      port=port,
-                      user=users,
-                      password=password,
-                      db=dbs,
-                      charset=charset,
-                      )
-        db=mysql.cursor(pymysql.cursors.DictCursor)
-        info=dict(request.form)
-        user_pin=info['pin']
-
-        details=session['details']
-
-        firstname=details['firstname']   
-        surname=details['surname']    
-        email=details['email']
-        passwords=sha256_crypt.encrypt(details['password'])
-        customer_id=f'salemfx.{firstname}{surname}.{user_pin}'
-        Reffered='False'
-        if 'client_id' in session:
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> parent of 6e80bdd (updated confirmation Pin to confirmation Pin)
-=======
->>>>>>> parent of 6e80bdd (updated confirmation Pin to confirmation Pin)
-=======
->>>>>>> parent of 6e80bdd (updated confirmation Pin to confirmation Pin)
-            Reffered='True'
+            firstname=details['firstname']   
+            surname=details['surname']    
+            email=details['email']
+            passwords=details['password']
+            customer_id=f'salemfx.{firstname}{surname}.{random_number}'
+            Reffered='False'
+            if 'client_id' in session:
+             Reffered='True'
 
        
             
-        add_query=f'INSERT INTO perfect_trade_users(Firstname, Surname, Email, Password, Customer_ID,Referred) VALUES("{firstname}","{surname}","{email}","{passwords}","{customer_id}","{Reffered}")'     
-        add_query2=f'INSERT INTO account(Name, Email, Balance,Currency) VALUES("{firstname+surname}","{email}","{0.00}","USD")'    
-        if user_pin == session['pin']:
+            add_query=f'INSERT INTO perfect_trade_users(Firstname, Surname, Email, Password, Customer_ID,Referred) VALUES("{firstname}","{surname}","{email}","{passwords}","{customer_id}","{Reffered}")'     
+            add_query2=f'INSERT INTO account(Name, Email, Balance,Currency) VALUES("{firstname+surname}","{email}","{0.00}","USD")'    
+            if user_pin == session['pin']:
              db.execute(add_query)
              db.execute(add_query2)
              mysql.commit()
@@ -337,15 +292,15 @@ def confirm_email():
         
         
 
-        else:
-            #  flash("Your Pin Do Not Match ", "red")
+            else:
+             flash("Your Pin Do Not Match ", "red")
              response['status']="failed"
-            #  redirect(url_for('confirm_email'))
+             redirect(url_for('confirm_email'))
              return json.dumps(response) 
 
     #   timer=threading.Timer(int(60*5),clear())
     #   timer.start()
-      return render_template('User/confirm_email.html',Page="Confirm Email")
+    return render_template('User/confirm_email.html',Page="Confirm Email")
 
 
 @app.route("/rlogin", methods=['GET', 'POST'])
