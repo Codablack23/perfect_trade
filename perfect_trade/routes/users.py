@@ -229,8 +229,6 @@ def clear():
 
 @app.route("/confirm_email", methods=["GET", "POST"])
 @AuthorizeSignUp
-<<<<<<< HEAD
-<<<<<<< HEAD
 def confirm_email_api(mytoken):
     random_number=int(random()*1000000)
     if request.method=="POST":
@@ -272,6 +270,8 @@ def confirm_email_api(mytoken):
 =======
 =======
 >>>>>>> parent of 6e80bdd (updated confirmation Pin to confirmation Pin)
+=======
+>>>>>>> parent of 6e80bdd (updated confirmation Pin to confirmation Pin)
 def confirm_email():
       response={
          "status":""
@@ -298,6 +298,9 @@ def confirm_email():
         Reffered='False'
         if 'client_id' in session:
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of 6e80bdd (updated confirmation Pin to confirmation Pin)
+=======
 >>>>>>> parent of 6e80bdd (updated confirmation Pin to confirmation Pin)
 =======
 >>>>>>> parent of 6e80bdd (updated confirmation Pin to confirmation Pin)
