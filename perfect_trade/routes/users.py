@@ -283,12 +283,14 @@ def confirm_email():
                     db.execute(f'INSERT INTO referrals(Client_ID,Reffered_Client,Client_Investment_Status,Percentage,Reffered_Client_ID) VALUES("{client_id}","{Reffered_Client}","{i_status}","{percent}","{Reffered_Client_ID}")')
                     mysql.commit()
                     count=db.rowcount
-                del(session['details'])
-                del(session['pin'])
-                del(session['client_id'])
-                response['status']="success"
-             else:
-                response['status']="success"
+                    del(session['details'])
+                    del(session['pin'])
+                    del(session['client_id'])
+                    response['status']="success"
+                else:
+                  del(session['details'])
+                  del(session['pin'])
+                  response['status']="success"
              return json.dumps(response)
         
         
