@@ -130,6 +130,7 @@ def SignUp():
                 except Exception as error:
                     flash("Sorry It Seems an Error Occured", "red")
                     redirect(url_for("SignUp"))
+                    print(error)
                      
                
      
@@ -229,7 +230,7 @@ def clear():
 
 @app.route("/confirm_email", methods=["GET", "POST"])
 @AuthorizeSignUp
-def confirm_email_api(mytoken):
+def confirm_email():
     random_number=int(random()*1000000)
     if request.method=="POST":
         # return flask.jsonify({"Hello":"user"})
