@@ -47,6 +47,7 @@ def addInvestment(name,email,duration,amount,currency,plan,returns,percent,payme
     mysql.commit()
     data=promo.rowcount
     mysql.close()
+    print(data)
     return data
 def addCryptoWallet(wallet_id,wallet_type):
     mysql=pymysql.connect(host=host,
@@ -168,6 +169,7 @@ def getSpecific(name):
     db=mysql.cursor(pymysql.cursors.DictCursor)
     db.execute(f'SELECT * FROM investments WHERE Name="{name}"')
     data=db.fetchall()
+    print(data)
     return data
 
 def getAccountDetails():
@@ -291,6 +293,7 @@ def invest():
             if count > 0:
                 app.logger.info('success')
                 new_investment=addInvestment(fullname,new_email,duration,amount,currency,plan,returns,percent,payment_stats,i_date)
+                app.logger.info(new_investment)
                 if new_investment>0:
                       status['Success']=True
                       new_msg=Message()
@@ -300,15 +303,32 @@ def invest():
                       new_msg.sender=f'{fullname} From Perfect Trade'
                       mail.send(new_msg)  
                 else :
+                    print(count)
                     status['Success']=False
                     status['error']="An Error Occured"
         else:
             app.logger.info("NADA")
+            new_investment=addInvestment(fullname,new_email,duration,amount,currency,plan,returns,percent,payment_stats,i_date)
+            app.logger.info(new_investment)
+
+            if new_investment>0:
+                status['Success']=True
+                new_msg=Message()
+                new_msg.subject="Starting Investment"
+                new_msg.body=f'{fullname} from Perfect Trade is About To Make an Investment Of {amount} {currency} through the BTC or Etherum Address You will Recieve A Payment Soon'
+                new_msg.recipients=['perfecttrades.com@gmail.com']
+                new_msg.sender=f'{fullname} From Perfect Trade'
+                mail.send(new_msg)  
+            else :
+                status['Success']=False
+                status['error']="An Error Occured"
 
       else:
         app.logger.info(user['Referred'])
         app.logger.info('False')
         new_investment=addInvestment(fullname,new_email,duration,amount,currency,plan,returns,percent,payment_stats,i_date)
+        app.logger.info(new_investment)
+
         if new_investment>0:
             status['Success']=True
             new_msg=Message()
