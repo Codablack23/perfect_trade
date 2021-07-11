@@ -18,7 +18,7 @@ function selectPlan(index, plan, Name) {
 
         console.log($(`.${Name}`).eq(index))
         const nums = [0, 1, 2, 3]
-        const percent = [30, 45, 60, 70]
+        const percent = [0.15, 0.20, 0.25, 0.30]
         const min = [270, 1000, 10000, 100000]
         const max = [999, 9999, 99999, 999999]
         for (let i = 0; i < nums.length; i++) {
@@ -494,7 +494,7 @@ $(document).ready(() => {
             const i_date = document.querySelector('#investment_date').value
             const new_currency = document.querySelector('#payment_currency').value
             const new_date = new Date(i_date)
-            returns = amount * percentage
+            returns =(amount * percentage)
             $.ajax({
                     url: 'invest',
                     dataType: "JSON",
@@ -507,7 +507,7 @@ $(document).ready(() => {
                         "email": email,
                         "amount": amount,
                         "currency": new_currency,
-                        "returns": parseFloat(amount) + parseFloat(returns),
+                        "returns": parseFloat(returns),
                         "Duration": 7,
                         "plan": currentPlan,
                         "percent": percentage,
