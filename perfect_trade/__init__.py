@@ -28,8 +28,8 @@ import os
 
 app = Flask(__name__)
 app.secret_key="b'bV/\x1d\xc1\xf9\x96i\x15\xaa\xe9\x85A\xb0+Y\x11&\x111cz?+'"
-host="mysql-34058-0.cloudclusters.net"
-port=34058
+host="mysql-38344-0.cloudclusters.net"
+port=38344
 user="perfect_trade"
 password="perfect_trade"
 db='perfect_trade'
