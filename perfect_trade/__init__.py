@@ -31,7 +31,7 @@ app.secret_key="b'bV/\x1d\xc1\xf9\x96i\x15\xaa\xe9\x85A\xb0+Y\x11&\x111cz?+'"
 host="localhost"
 user="sptmarke_admin"
 password="sptmarkets@password.com"
-db='sptmarkets_db'
+db='sptmarke_db'
 app.config['SQLALCHEMY_DATABASE_URI']="sqlite:///mydb.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 
