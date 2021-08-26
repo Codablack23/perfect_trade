@@ -28,11 +28,10 @@ import os
 
 app = Flask(__name__)
 app.secret_key="b'bV/\x1d\xc1\xf9\x96i\x15\xaa\xe9\x85A\xb0+Y\x11&\x111cz?+'"
-host="mysql-38344-0.cloudclusters.net"
-port=38344
-user="perfect_trade"
-password="perfect_trade"
-db='perfect_trade'
+host="localhost"
+user="sptmarke_admin"
+password="sptmarkets@password.com"
+db='sptmarkets_db'
 app.config['SQLALCHEMY_DATABASE_URI']="sqlite:///mydb.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 
@@ -50,13 +49,13 @@ charset='utf8mb4'
 
 # MysqlConnection().operate_database()
 
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_SERVER'] = 'mail.sptmarkets.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
 # app.config['MAIL_USERNAME'] = "support.team.perfecttrades@gmail.com"
 # app.config['MAIL_PASSWORD'] = "p@password.com"
-app.config['MAIL_USERNAME'] = "perfecttrades.com.ng@gmail.com"
-app.config['MAIL_PASSWORD'] = "perfecttrades@password.com"
+app.config['MAIL_USERNAME'] = "support@sptmarkets.com"
+app.config['MAIL_PASSWORD'] = "support@password.com"
 mail = Mail(app)
 
 from .models import Users,messages,account,account_details,Promo,investments,withdrawals,Admin,wallet
