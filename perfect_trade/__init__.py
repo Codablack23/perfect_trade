@@ -32,6 +32,7 @@ host="localhost"
 user="sptmarke_admin"
 password="sptmarkets@password.com"
 db='sptmarke_db'
+port=8080
 app.config['SQLALCHEMY_DATABASE_URI']="sqlite:///mydb.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 

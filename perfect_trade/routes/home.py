@@ -1,8 +1,7 @@
 from flask import Flask, render_template,redirect,logging,flash,url_for,session,request,jsonify
 from wtforms import Form,StringField,PasswordField,TextAreaField,validators
 from passlib.hash import sha256_crypt
-from perfect_trade import app
-from perfect_trade import host,db as dbs,password,port,user as users,charset,database
+from perfect_trade import app,host, port,db as dbs, password, user as users, charset, database
 from perfect_trade import mail
 from flask_mail import Message
 from perfect_trade.models import Users,new_users
