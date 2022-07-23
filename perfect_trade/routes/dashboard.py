@@ -216,7 +216,6 @@ def endInvestment(Id,status):
 
 
 @app.route("/dashboard/")
-@Authorize
 def Dashboard():
     user=getUserData()
     current_date=datetime.now().strftime("%x")
@@ -236,12 +235,11 @@ def Dashboard():
             if invest['Status']=="Completed":
                Completed.append(invest)
   
-    ongoingLength=len(ongoing)
-    completedLength=len(Completed)
-    return render_template("Dashboard/home.html", Page="Home", fullname=fullname,Ongoing=ongoing,complete=Completed,onlength=ongoingLength,compLength=completedLength)
+    ongoingLength=1
+    completedLength=2
+    return render_template("Dashboard/home.html", Page="Home", fullname="fullname",Ongoing=ongoing,complete=Completed,onlength=ongoingLength,compLength=completedLength)
 
 @app.route("/dashboard/logout")
-@Authorize
 def logout():
     session.clear()
     flash("You Have Logged out", "green")
@@ -249,7 +247,6 @@ def logout():
 
 
 @app.route("/dashboard/referrals")
-@Authorize
 def referrals():
     user=getUserData()
     fullname=f"{user['Firstname']} {user['Surname']}"
@@ -258,7 +255,7 @@ def referrals():
 
 
 @app.route("/dashboard/invest",methods=["GET","POST"])
-@Authorize
+
 def invest():
     user=getUserData()
     fullname=f"{user['Firstname']} {user['Surname']}"
@@ -345,7 +342,6 @@ def invest():
     return render_template('Dashboard/invest.html', Page="Invest", fullname=fullname, user=user)
 
 @app.route("/dashboard/withdrawals")
-@Authorize
 def withdrawal():
     user=getUserData()
     fullname=f"{user['Firstname']} {user['Surname']}"
@@ -353,7 +349,6 @@ def withdrawal():
 
 
 @app.route("/dashboard/accounts", methods=['GET','POST'])
-@Authorize
 def accounts():
     mysql=pymysql.connect(host=host,
                       port=port,
@@ -415,11 +410,10 @@ def accounts():
     return render_template('Dashboard/accounts.html', Page="Accounts", fullname=fullname, user=user,accounts=data,L=length,btc=btc_wallet,etherum=eth_wallet)
 
 @app.route("/dashboard/charts")
-@Authorize
 def charts():
-    user=getUserData()
-    fullname=f"{user['Firstname']} {user['Surname']}"
-    return render_template('Dashboard/charts.html', Page="Charts", fullname=fullname, user=user)
+    user={}
+    # fullname=f"{user['Firstname']} {user['Surname']}"
+    return render_template('Dashboard/charts.html', Page="Charts", fullname="fullname", user="user")
 
 @app.route("/dashboard/api_keys", methods=["POST"])
 @Authorize

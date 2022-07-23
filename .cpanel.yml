@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home2/sptmark1/spt
+    - /bin/cp -R ./ $DEPLOYPATH

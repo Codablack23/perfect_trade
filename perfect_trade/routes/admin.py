@@ -27,6 +27,8 @@ def getInfo(query):
     data=list(investment.fetchall())
     return data
     mysql.close()
+    
+    
 
 def confirm_investment(Id):
     date=datetime.now()
@@ -186,8 +188,9 @@ def getWallets(wallet_type):
     user_data=mysql.cursor(pymysql.cursors.DictCursor)
     user_data.execute(f"SELECT * FROM crypto_wallet WHERE  Wallet_Type='{wallet_type}'")
     data=user_data.fetchall()
-    return data
     mysql.close()
+    return data
+    
 def suspendPromo(Id):
     mysql=pymysql.connect(host=host,
                       port=port,

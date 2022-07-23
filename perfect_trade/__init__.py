@@ -5,6 +5,17 @@ from flask_marshmallow import Marshmallow
 from flask_sqlalchemy import SQLAlchemy
 import sqlite3
 import os
+import pymysql
+
+db_details = {
+    "username":os.getenv("DB_USERNAME"),
+    "password":os.getenv("DB_PASSWORD"),
+    "db":os.getenv("DB_NAME"),
+    "host":os.getenv("DB_HOST")
+    
+}
+
+mysql_conn = f'mysql+pymysql://{db_details["username"]}:{db_details["password"]}@{db_details["host"]}/{db_details["db"]}'
 
 # class MysqlConnection(object):
 #     def __init__(self):
@@ -28,12 +39,12 @@ import os
 
 app = Flask(__name__)
 app.secret_key="b'bV/\x1d\xc1\xf9\x96i\x15\xaa\xe9\x85A\xb0+Y\x11&\x111cz?+'"
-host="localhost"
-user="sptmarke_admin"
-password="sptmarkets@password.com"
-db='sptmarke_db'
+host=db_details["host"]
+user=db_details["username"]
+password=db_details["password"]
+db=db_details["db"]
 port=8080
-app.config['SQLALCHEMY_DATABASE_URI']="sqlite:///mydb.db"
+app.config['SQLALCHEMY_DATABASE_URI']= mysql_conn
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 
 database=SQLAlchemy(app)
